@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <title>Device Management </title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="container">
+        <div id="app">
+          <div class="card mt-5">
+            <div class="card-title mt-2">
+              <button class="btn btn-success ml-2 "><a href="homepage_alarm" style="  color: black;"><b>Water Alarm Management</b></a></button>
+              <button class="btn btn-success ml-2 "><a href="/" style="  color: black;"><b>Temperature Management</b></a></button>
+              <center>
+                <h4 class="mt-4"><b>Actuators Management</b></h4>
+
+                
+              </center>
+            </div>
+
+            <!-- VIEW MODE-->
+
+            <div class="card-body" >
+              <div class="table-responsive" style="height: 550px">
+                <table class="table">
+                  <thead class="thead-light">
+                    <tr>
+                      
+                      <th scope="col">DEVICE_ID</th>
+                      <th scope="col">OPEN WR </th>
+                      <th scope="col">CLOSE WR</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="device in devices">
+                        <td>{{device}}</td>
+                      <td><button class="btn btn-success" :id="device" @click="servoOn" > ON </button></td>
+                      <td><button class="btn btn-danger" :id="device" @click="servoOff" > OFF </button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>            
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          devices: [],
+        },
+
+        beforeCreate: function () {
+          this.$http.get("http://localhost:8080/getDevices").then(
+            (response) => {
+              this.devices = response.body;
+              console.log(this.devices)
+            
+            },
+            (response) => {
+              this.devices=[]
+              if(this.devices.length==0)
+                alert("No data found!")
+            }
+          );
+        },
+
+        methods: {
+
+          switch2Agg: function () {
+            this.aggMode = true;
+            this.viewMode = false;
+            this.lastMode = false;
+
+
+            this.$http.get("http://localhost:8080/getAggregateDataTemperature").then(
+            (response) => {
+              this.agg_devices = response.body;
+            },
+            (response) => {
+              this.agg_devices=[]
+              if(this.agg_devices.length==0)
+                alert("No data found!")
+            }
+          );
+          },
+        relayOn: function(event){
+
+        this.$http.get("http://localhost:8080/relayOn/"+event.target.id).then(
+            (response) => {
+                console.log(response)
+            },
+            (response) => {
+            
+            }
+          );
+
+          },
+        relayOff: function(event){
+
+        this.$http.get("http://localhost:8080/relayOff/"+event.target.id).then(
+            (response) => {
+                console.log(response)
+         },
+        (response) => {
+    
+            }
+         );
+        },
+        manualOn: function(event){
+
+        this.$http.get("http://localhost:8080/manualOn/"+event.target.id).then(
+            (response) => {
+                console.log(response)
+         },
+        (response) => {
+    
+            }
+         );
+        },
+        
+        manualOff: function(event){
+
+        this.$http.get("http://localhost:8080/manualOff/"+event.target.id).then(
+            (response) => {
+                console.log(response)
+         },
+        (response) => {
+    
+            }
+         );
+        },
+
+        servoOn: function(event){
+            this.$http.get("http://localhost:8080/servoOn/"+event.target.id).then(
+            (response) => {
+                 console.log(response)
+             },
+            (response) => {
+    
+            }
+             );
+        },
+        servoOff: function(event){
+            this.$http.get("http://localhost:8080/servoOff/"+event.target.id).then(
+            (response) => {
+                 console.log(response)
+             },
+            (response) => {
+    
+            }
+             );
+        },
+
+        }
+      })
+
+  
+    </script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
