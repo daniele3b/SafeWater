@@ -57,3 +57,53 @@ Each record of these tables contains also the timestamp of the record and the id
 In the **fifth point** the backend of the web-dashboard communicates through API with the DynamoDB endpoint to get temperature and fill level data. The backend written using NodeJS provides routes (API) in order to allow to the frontend (written in Javascript and HTML using VueJS) to visualize data.
 
 In the **sixth point** frontend can communicate through the backend (NodeJS) with the AWS MQTT Broker in order to control the servo motor from the dashboard.
+
+
+## HOW TO SETUP AND RUN ##
+
+In order to use the system we need to setup a circuit as in the image below:
+
+![Fritzing image](https://images-na.ssl-images-amazon.com/images/I/61%2BHMmSEonL._AC_SX450_.jpg)
+
+The system needs of third parties software in order to work, so please install:
+
+- RSBM
+- Mosquitto
+- NodeJS
+- AWS account 
+
+The system is composed by 2 main parts:
+
+- Nucleo f401re
+- Server Web-dashboard
+
+### Setup AWS IoT Core
+
+In order to allow to the system to work it's necessary that tou have an account on AWS, you need to create a "thing" and get its certificate, you can find a tutorial [here](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html).
+
+You need also to setup 2 rules in order to make possible to Iot Core to store data coming from the Mosquitto Broker into the DynamoDB, the topic that you need to manage are:
+
+- device/+/temperature
+- device/+/alarm
+
+You can follow this [tutorial](https://docs.aws.amazon.com/iot/latest/developerguide/iot-ddb-rule.html) to create these rules, in the operation field of the rule set **device_data**, in particular the query must be:
+
+- SELECT * FROM 'device/+/temperature'
+- SELECT * FROM 'device/+/alarm'
+
+The DynamoDB tables should name safewater_temperature and safewater_alarm
+
+### Setup Mosquitto
+
+In order to bridge data coming from RSBM to AWS MQTT Broker you need to configure Mosquitto using certificates obtained before and you need to setup 3 topics with the communication mode as **both**
+
+- 'device/+/temperature'
+- 'device/+/alarm'
+- 'device/+/control'
+
+### Setup RSBM
+
+In the configuration file of RSBM, you need to configure the bridge for the three topics above reported, the communication mode is **both**
+
+
+
