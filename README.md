@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The managament of water resources is an important task which helps to improve the environment quality. SafeWater is an IoT solution that allows to the water resources's manager to monitor the fill level of the water resources and their temperature to choose the best moment to use them.
+The managament of water resources is an important task in particular where there is a shortage of water. SafeWater is an IoT solution that allows to the water resources's manager to monitor the fill level of the water resources and their temperature to choose the best moment to use them.
 SafeWater is thought to maximize the capacity of the water silos and to choose the best way of use for a particular water resource, to reach these purposes it uses 2 kind of sensors:
 
 - A DHT22: a sensor used to measure the temperature of the water;
