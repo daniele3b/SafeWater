@@ -12,11 +12,11 @@ The system uses a relay in order to activate a water pump when the reserve is fi
 
 ## Sensors and Actuators
 
-DHT22 is the sensor used to measure the temperature in order to choose the best use of a certain water resource. It is used for periodic sensing, the time can be specified through a constant DELAY in the code for the embedded system.
+DHT22 is the sensor used to measure the temperature in order to choose the best use of a certain water resource. It is used for periodic sensing, the time can be specified through a constant DELAY in the code for the embedded system. The accuracy of this sensor is +-0.5 Celsius instead it's sensitivity is 0.1 Celsius and it's Sensing period has an average of 2s
 
 ![DHT22](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4hbNtcYRyk61Te1Oc6CpURJg1IHGcW0OeUMNck-hJ4uDKsvC4lXkHNmg6mThXXZPjs8&usqp=CAU)
 
-Water level sensor is used to measure the fill level and it's an event driven sensor: when  the water reaches a level sufficient to close the circuit through the float, the system will detect the level of the water.
+Water level sensor ZP4510 is used to measure the fill level and it's an event driven sensor: when  the water reaches a level sufficient to close the circuit through the float, the system will detect the level of the water. Its body dimension is 36mm so it's possible to measure a growth of the water level equals to its body dimension, the fill level is constantly monitored.
 
 ![Water level sensor](https://images-na.ssl-images-amazon.com/images/I/61%2BHMmSEonL._AC_SX450_.jpg)
 
