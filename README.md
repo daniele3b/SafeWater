@@ -102,9 +102,11 @@ In order to bridge data coming from RSBM to AWS MQTT Broker you need to configur
 - 'device/+/alarm'
 - 'device/+/control'
 
+You can find a tutorial [here](https://aws.amazon.com/it/blogs/iot/how-to-bridge-mosquitto-mqtt-broker-to-aws-iot/)
+
 ### Setup RSBM
 
-In the configuration file of RSBM, you need to configure the bridge for the three topics above reported, the communication mode is **both**
+In the configuration file (config.conf) of RSBM, you need to configure the bridge for the three topics above reported, the communication mode is **both** 
 
 ### Setup backend
 
@@ -120,10 +122,10 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 
 ### Run and Test 
 
-1. Start the mosquitto broker using **sudo service mosquitto start**
-2. Start RSBM using **./bridge_mqtt config.conf**
-3. You can flash and run the code into the nucleo f401re board using: **make all flash term** it'll flash the application into the device and it will open the terminal.
-4. Start the web dashboard and the backend using **node index.js**, the web-dashboard will be available to **localhost:8080**
+1. Start the mosquitto broker using **sudo service mosquitto start** or **sudo service mosquitto restart** 
+2. Start RSBM using **./bridge_mqtt config.conf** in the RSBM folder
+3. Flash and run the code into the nucleo f401re board using: **make all flash term**: it'll flash the application into the device and it will open the terminal.
+4. Start the web dashboard and the backend using **node index.js**, the web-dashboard will be available at **localhost:8080**
 5. Using the nucleo f401re terminal you can see the console print and also the message coming from the broker
 6. Using the web-dashboard you can interact with the device
 
