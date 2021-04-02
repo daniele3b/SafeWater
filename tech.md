@@ -70,3 +70,130 @@ char* NOALARM= "WATER ALARM RESET!";
 These are global variables that threads share among them, in particular the **timer** is used to interact with the temperature sensor with regular intervals using the **rtc** module. Variables as **servo**, **floater** and **relay** represent pins in which these devices are connected.
 
 An important variable is the MQTT_TOPICS, it is an array of topics to distinguish the devices, each topic contain an incremental number, in this case 1.
+
+## MQTT COMMUNICATION
+
+```
+static void *emcute_thread(void *arg)
+{
+    (void)arg;
+    emcute_run(CONFIG_EMCUTE_DEFAULT_PORT, EMCUTE_ID);
+    return NULL;    /* should never be reached */
+}
+```
+This function allows to create a thread in order to manage the MQTT communication with the local broker.
+
+```
+static void on_pub(const emcute_topic_t *topic, void *data, size_t len)
+{
+    char *in = (char *)data;
+
+    printf("### got publication for topic '%s' [%i] ###\n",
+           topic->name, (int)topic->id);
+    for (size_t i = 0; i < len; i++) {
+        printf("%c", in[i]);
+    }
+
+    
+    if(topic->name==MQTT_TOPICS[2])
+    {	
+		
+			if(strcmp(in,"SERVOON")==0)			
+					open_gate(&servo);
+				
+			
+				
+			if(strcmp(in,"SERVOOFF")==0)
+				close_gate(&servo);			
+		
+	}
+	
+}
+
+int setup_mqtt(void)
+{
+    /* initialize our subscription buffers */
+    memset(subscriptions, 0, (NUMOFSUBS * sizeof(emcute_sub_t)));
+
+    /* start the emcute thread */
+    thread_create(stack, sizeof(stack), EMCUTE_PRIO, 0,
+                  emcute_thread, NULL, "emcute");
+
+    // connect to MQTT-SN broker
+    printf("Connecting to MQTT-SN broker %s port %d.\n",
+           SERVER_ADDR, SERVER_PORT);
+
+    sock_udp_ep_t gw = { .family = AF_INET6, .port = SERVER_PORT };
+    char *topic = MQTT_TOPIC;
+    char *message = "connected";
+    size_t len = strlen(message);
+
+    /* parse address */
+    if (ipv6_addr_from_str((ipv6_addr_t *)&gw.addr.ipv6, SERVER_ADDR) == NULL) {
+        printf("error parsing IPv6 address\n");
+        return 1;
+    }
+
+    if (emcute_con(&gw, true, topic, message, len, 0) != EMCUTE_OK) {
+        printf("error: unable to connect to [%s]:%i\n", SERVER_ADDR,
+               (int)gw.port);
+        return 1;
+    }
+
+    printf("Successfully connected to gateway at [%s]:%i\n",
+           SERVER_ADDR, (int)gw.port);
+
+    // setup subscription to topics 
+    unsigned flags = EMCUTE_QOS_0;
+    
+    for (int i=0;i< NUMOFSUBS;i++)
+    {
+		subscriptions[i].cb=on_pub;
+		strcpy(topics[i],MQTT_TOPICS[i]);
+		subscriptions[i].topic.name=MQTT_TOPICS[i];
+	}
+    
+	//subscribe to topics
+	for (int i=0;i<NUMOFSUBS;i++)
+	{
+		if (emcute_sub(&subscriptions[i], flags) != EMCUTE_OK) 
+		{
+			printf("error: unable to subscribe to %i topic\n", i);
+			return 1;
+		}
+	}
+    
+    if(DEV_MODE)
+    {
+		printf("Now subscribed!\n");
+	}
+    return 1;
+}
+```
+
+The function **setup_mqtt** allows to the emcute thread to connect to the local broker, to subscribe to each topic indicated in the MQTT_TOPICS array and to set as callback the function **on_pub**: this function allows to control the device by remote using the web dashboard monitoring the message oon the topic "device/1/control".
+
+```
+static int pub( emcute_topic_t *topic,void* data,size_t len)
+{
+	if(DEV_MODE)
+	{
+		printf("SENDING DATA!\n");
+	}
+	char *in = (char *)data;
+    unsigned flags = EMCUTE_QOS_0;
+    
+    if (emcute_pub(topic, in, len, flags) != EMCUTE_OK) {
+        printf("error: unable to publish data to topic '%s [%i]'\n",
+                topic->name, (int)topic->id);
+        return 1;
+    }
+
+    printf("Published %i bytes to topic '%s [%i]'\n",
+            (int)len, topic->name, topic->id);
+    return 0;
+}
+```
+
+This function allows to publish data on a certain topic, the QoS used is 0 and it takes as parameters: a topic structure that contains the ID and the name of the topic, the data to be sent and the size of the data.
+
