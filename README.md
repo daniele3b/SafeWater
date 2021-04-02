@@ -25,7 +25,7 @@ Actuators of the system are:
 - A servo motor: used to similute the closure of the water reserve;
 - A relay: used to activate a water pump;
 
-When the water resource is full the water sensor level will activate the closure of the silos through the servo motor and it'll activate the water pump closing the circuit using the relay in order to use the water collected. In particular it's possible to close and to open manually through the web dashboard the servo motor in order to choose if the operator want that more water is collected inside that water resource or not.
+When the water resource is full the water sensor level will activate the closure of the silos through the servo motor and it'll activate the water pump closing the circuit using the relay in order to use the water collected. In particular, if the water container isn't filled, it's possible to close and to open manually through the web dashboard the servo motor in order to choose if the operator want that more water is collected inside that water resource or not.
 
 The system is designed in order to guarantee the correct operation also with multiple SafeWater devices.
 
