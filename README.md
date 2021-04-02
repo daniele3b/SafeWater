@@ -63,7 +63,12 @@ In the **sixth point** frontend can communicate through the backend (NodeJS) wit
 
 In order to use the system we need to setup a circuit as in the image below:
 
-![Fritzing image](https://images-na.ssl-images-amazon.com/images/I/61%2BHMmSEonL._AC_SX450_.jpg)
+![Fritzing image](https://github.com/daniele3b/SafeWater/blob/main/images/circuit.png)
+
+**NOTE**
+The temperature is a DHT22 instead in the image above is an RHT3, DHT22 has three pins: VCC, GND,OUT.
+The relay module used it's differente from that reported in the scheme, it has 2 relay and has 4 pins: VCC,GND,IN1,IN2. IN1 and IN2 are used to close/open the relay. Furthermore, there are also pins for external source power.
+The fill level sensore doesn't exist in Fritzing, but it's wired as in the image above.
 
 The system needs of third parties software in order to work, so please install:
 - RIOT OS
