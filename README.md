@@ -134,6 +134,10 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 5. Using the nucleo f401re terminal you can see the console print and also the message coming from the broker
 6. Using the web-dashboard you can interact with the device
 
+## Techincal Infomation  about the code ##
+
+Information about the board's code can be found [here](https://github.com/daniele3b/SafeWater/blob/main/tech.md)
+
 
 
 
