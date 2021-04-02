@@ -1,5 +1,37 @@
-# SafeWater 
+# SafeWater
 
+## makefile
+These are the modules used in the system, in particular the **dht** and the **fmt** modules are used to perform measurement about the temperature using the DHT22 sensor, the **servo** module is used to control the servo motor instead **ethos** is used to simulate the internet connectivity of the device because the **nucleo f401re** doesn't provide this support.
+
+```
+# Modules to include:
+USEMODULE += xtimer
+USEMODULE += analog_util
+USEMODULE += dht
+USEMODULE += fmt
+USEMODULE += servo
+
+#MODULE MQTT+ETHOS
+# Default to using ethos for providing the uplink when not on native
+UPLINK ?= ethos
+
+# Include packages that pull up and auto-init the link layer.
+# NOTE: 6LoWPAN will be included if IEEE802.15.4 devices are present
+USEMODULE += gnrc_netdev_default
+USEMODULE += auto_init_gnrc_netif
+
+# Specify the mandatory networking modules for IPv6
+USEMODULE += gnrc_ipv6_default
+
+# Include MQTT-S client
+USEMODULE += emcute
+
+# Optimize network stack to for use with a single network interface
+USEMODULE += gnrc_netif_single
+
+USEMODULE += stdio_ethos
+USEMODULE += gnrc_uhcpc
+```
 ## main.c
 
 ### Constants to activate/disactive functionality
