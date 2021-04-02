@@ -66,7 +66,7 @@ In order to use the system we need to setup a circuit as in the image below:
 ![Fritzing image](https://images-na.ssl-images-amazon.com/images/I/61%2BHMmSEonL._AC_SX450_.jpg)
 
 The system needs of third parties software in order to work, so please install:
-
+- RIOT OS
 - RSBM
 - Mosquitto
 - NodeJS
