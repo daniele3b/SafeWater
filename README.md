@@ -71,6 +71,7 @@ The system needs of third parties software in order to work, so please install:
 - Mosquitto
 - NodeJS
 - AWS account 
+- Openocd
 
 The system is composed by 2 main parts:
 
@@ -104,6 +105,28 @@ In order to bridge data coming from RSBM to AWS MQTT Broker you need to configur
 ### Setup RSBM
 
 In the configuration file of RSBM, you need to configure the bridge for the three topics above reported, the communication mode is **both**
+
+### Setup backend
+
+To run the backend you need to install all the dependencies, you can do this using **npm install** it'll install all the dependencies contained in the package.json. You need to create a .env file containing the information about the aws account:
+
+- accessKeyId
+- secretAccessKey
+- sessionToken
+- id
+- endpoint
+
+Furthermore, you need to create a folder called **certs** and load certificates of the "thing" inside it.
+
+### Run and Test 
+
+1. Start the mosquitto broker using **sudo service mosquitto start**
+2. Start RSBM using **./bridge_mqtt config.conf**
+3. You can flash and run the code into the nucleo f401re board using: **make all flash term** it'll flash the application into the device and it will open the terminal.
+4. Start the web dashboard and the backend using **node index.js**, the web-dashboard will be available to **localhost:8080**
+5. Using the nucleo f401re terminal you can see the console print and also the message coming from the broker
+6. Using the web-dashboard you can interact with the device
+
 
 
 
