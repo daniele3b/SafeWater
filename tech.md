@@ -254,5 +254,93 @@ void createJSONtemperature(char* temp_s,char* s)
 The data to be sent are formatted in JSON, because the AWS MQTT broker works in this format. This kind of file allows also an easier management of the data when the rules are applied by the IoT Core.
 
 
+## Setup of the sensors and actuators
 
+### Servo motor setup
 
+```	
+	if(SERVO_DEV)
+	{
+		if(servo_init(&servo,PWM_DEV(0),1,SERVO_MIN,SERVO_MAX)<0)
+		{
+			printf("FAILED TO CONNECT TO SERVO!\n");
+			return-1;
+		}
+	}	
+```
+
+This code allows to initialize the servo motor, using the channel one of the PWM_DEV(0) and using the driver contained in **servo.h** it's possible to set the range of degree that the servo it's able to use.
+
+### Relay setup
+
+```
+	if(RELAY_DEV)
+	{
+		relay=GPIO_PIN(PORT_A,8);
+		
+		if(gpio_init(relay,GPIO_OUT)<0)
+		{
+			printf("FAILED TO CONNECT TO RELAY\n");
+			return -1;
+		}
+	}
+```
+A relay can be seen as a digital device that takes as input value 0 (LOW VOLTAGE) or 1 (HIGH VOLTAGE), so in the piece of code above the relay is initialized as an output devicE.
+
+### MQTT SETUP
+
+```	
+	if(MQTT_DEV)
+	{
+		// setup MQTT-SN connection
+		printf("Setting up MQTT-SN.\n");
+		setup_mqtt();
+	}
+```
+This code launchs the setup phase of the MQTT thread that as written in the section about MQTT allows to connect and to manage data from/to the local broker (RSBM):
+
+### Floater setup
+
+```
+if(FLOAT_DEV)
+	{
+		//check if floater is init
+		if(gpio_init(floater,GPIO_IN)<0)
+		{
+			printf("FAILED TO CONNECT TO FLOATER!\n");
+			return -1;
+		}	
+	}
+```
+
+The floater is a sensor that works as a switch so it can be considered as input, and it's possible to setup it using the classic GPIO function.
+	
+### DHT22 setup
+
+```
+	//define dht parameters
+	dht_params_t my_params;
+	my_params.pin= GPIO_PIN(PORT_A,10);
+	my_params.type=DHT22;
+	my_params.in_mode=DHT_PARAM_PULL;
+    
+	
+	//initialize dht
+	dht_t dev;
+	if(DHT_DEV)
+	{	
+		if(dht_init(&dev,&my_params)==DHT_OK){
+			printf("DHT SENSORS CONNECTED! \n");
+			rtc_init();
+			rtc_get_time(&timer);
+			timer.tm_sec += DELAY;
+			rtc_set_alarm(&timer,callback_rtc,&dev);
+		}else
+		{
+			printf("FAILED TO CONNECT TO DHT SENSOR! \n");
+			return -1;
+		}
+				
+	}
+```
+ To initialize the DHT22 it's possible to use the driver supplied by **dht.h**, it's necessary to set some parameters as: pin, type of dht sensor, and mode. Subsequently, the dht sensor is initialized using the **dht_init** function provided by the driver.
