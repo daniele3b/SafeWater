@@ -343,4 +343,63 @@ The floater is a sensor that works as a switch so it can be considered as input,
 				
 	}
 ```
- To initialize the DHT22 it's possible to use the driver supplied by **dht.h**, it's necessary to set some parameters as: pin, type of dht sensor, and mode. Subsequently, the dht sensor is initialized using the **dht_init** function provided by the driver.
+ To initialize the DHT22 sensor it's possible to use the driver supplied by **dht.h**, it's necessary to set some parameters as: pin, type of dht sensor, and mode. Subsequently, the dht sensor is initialized using the **dht_init** function provided by the driver. Furthermore, the timer variable is used to set an interval after which a callback will be called:
+ 
+ ```
+static void callback_rtc(void* args)
+{
+	
+	dht_t* dev= (dht_t*)args;
+	reading_temperature_humidity(dev);
+	rtc_get_time(&timer);
+	timer.tm_sec += DELAY;
+	rtc_set_alarm(&timer,callback_rtc,args);
+
+}
+
+
+void reading_temperature_humidity(dht_t *dht)
+{
+	int16_t temp,hum;
+	
+	if(dht_read(dht,&temp,&hum)!=DHT_OK)
+	{
+		printf("Error reading dht22! \n");
+		return;	
+			
+	}
+		
+	char temp_s[10];
+	size_t n = fmt_s16_dfp(temp_s,temp,-1);
+	temp_s[n]= '\0';
+			
+	char hum_s[10];
+	n= fmt_s16_dfp(hum_s,hum,-1);
+	hum_s[n]='\0';
+		
+	if(DEV_MODE)
+	{
+		printf("HUM %s - TEMP %s \n",hum_s,temp_s);
+	}
+		
+	if(MQTT_DEV)
+	{
+	
+		char data[20];
+		createJSONtemperature(temp_s,data);
+		if(DEV_MODE)
+		{
+			printf("Temperature: %s\n",data);
+		}
+			
+		emcute_topic_t tp;
+		tp.name=subscriptions[0].topic.name;
+		tp.id=subscriptions[0].topic.id;
+		pub(&tp,data,strlen(data));
+	}	
+
+}
+
+ ```
+ The callback calls **reading_temperature_humidity** that allows to get the value about the temperature and to publish them on the temperature topic. After that the reading_temperature_humidity function is terminated the timer is resetted.
+
