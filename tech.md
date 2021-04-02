@@ -403,3 +403,73 @@ void reading_temperature_humidity(dht_t *dht)
  ```
  The callback calls **reading_temperature_humidity** that allows to get the value about the temperature and to publish them on the temperature topic. After that the reading_temperature_humidity function is terminated the timer is resetted.
 
+### Water alarm management
+
+ ```
+ void water_alarm_f(gpio_t floater,servo_t* servo,int* state)
+{
+	
+	char data[30];
+	int water_alarm=0;
+	water_alarm=gpio_read(floater);
+	if(water_alarm==0)
+	{
+		if(*state!=1)
+		{
+			
+			printf("Water Alarm !\n");
+				
+			if(MQTT_DEV)
+			{
+				
+				createJSONwater(ALARM,data);
+				//publish data on mqttsn
+				emcute_topic_t tp;
+				tp.name=subscriptions[1].topic.name;
+				tp.id=subscriptions[1].topic.id;
+				pub(&tp,data,strlen(data));
+				
+			}
+		}
+		
+		if(SERVO_DEV)
+		{
+			close_gate(servo);
+		}
+		
+		if(RELAY_DEV)
+		{
+			active_pump();
+		}
+		*state=1;
+	}
+	else
+	{
+		if(*state==1)
+		{
+			if(DEV_MODE)
+			{
+				printf("Safe Water Level! \n");
+			}
+			open_gate(servo);
+			
+			createJSONwater(NOALARM,data);
+			
+			//publish data on mqttsn
+			emcute_topic_t tp;
+			tp.name=subscriptions[1].topic.name;
+			tp.id=subscriptions[1].topic.id;
+			pub(&tp,data,strlen(data));
+			
+		}
+		*state=0;
+		
+		if(RELAY_DEV)
+		{
+			disactive_pump();
+		}	
+	}
+}
+ 
+  ```
+ This function allows to the system to check the fill level of the water container it's always monitored by the program and when the container is filled the servo motor is closed and the relay is activate in order to close the circuit to allow to the water pump to extract the water. When the water reaches a low level the servo motor opens the water container and disables the water pump.
