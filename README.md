@@ -33,7 +33,7 @@ The system is designed in order to guarantee the correct operation also with mul
 
 ![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema.png)
 
-As how it's possible to see from the above image the first component ofthe architecture is the Nucleo f401re. These are the devices that will be deployed in the water container in order to get data from the sensor and to control the actuators to manage water resources.
+As how it's possible to see from the above image the first component of the architecture is the Nucleo f401re. These are the devices that will be deployed in the water container in order to get data from the sensor and to control the actuators to manage water resources.
 
 In the first point of communication devices'll communicate with a local MQTT-SN in particular RSBM, in order to allow this exchange of data we need to provide a simulation of an ethernet/wifi module because the Nucleo f401re doesn't provide the connectivity module as other board do. To simulate this internet module during the development Ethos has been used, it allows to multiplex the USB channel in more parts and use these part as we want: in this case Ethos is used to create an udp channel and to provide an ipv6 that it's needed to communicate with the network. At this level each each device has 3 topic:
 
@@ -45,4 +45,15 @@ In the first point of communication devices'll communicate with a local MQTT-SN 
 In the second point of communication there is the communication between RSBM and MOSQUITTO, this intermediate step is needed because RSBM doesn't support the secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to  
 bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud.
 
-In the third point of communication there is the secure communication between MOSQUITTO and AWS MQTT Broker
+In the third point of communication there is the secure communication between MOSQUITTO and AWS MQTT Broker, in order to let the data exchange we need to configure a device on AWS IoT Core in order to get certificates that will allows to MOSQUITTO to communicate in a secure way with the AWS MQTT Broker.
+
+In the fourth point of communcation the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, the system uses 2 tables:
+
+- Temperature Table: contains data about temperature sensor
+- Alarm Table: contains data about water level sensor
+
+Each record of these tables contains also the timestamp of the record and the identifier of the device that sent data.
+
+In the fifth point of communication the backend of the web-dashboard communicates through API with the DynamoDB endpoint to get temperature and fill level data. The backend written using NodeJS provides routes (API) in order to allow to the frontend (written in Javascript and HTML using VueJS) to visualize data.
+
+In the sixth point of communication frontend can communicate through the backend (NodeJS) with the AWS MQTT Broker in order to control the servo motor from the dashboard.
