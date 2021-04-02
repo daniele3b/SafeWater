@@ -28,3 +28,19 @@ Actuators of the system are:
 When the water resource is full the water sensor level will activate the closure of the silos through the servo motor and it'll activate the water pump closing the circuit using the relay in order to use the water collected. In particular it's possible to close and to open manually through the web dashboard the servo motor in order to choose if the operator want that more water is collected inside that water resource or not.
 
 The system is designed in order to guarantee the correct operation also with multiple SafeWater devices.
+
+## IoT Architecture
+
+![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema.png)
+
+As how it's possible to see from the above image the first component ofthe architecture is the Nucleo f401re. These are the devices that we'll be deployed in the water container in order to get data from the sensor and to control the actuators to manage water resources.
+
+In the first point of communication devices'll communicate with a local MQTT-SN in particular RSBM, in order to allow this exchange of data we need to provide a simulation of an ethernet/wifi module because the Nucleo f401re doesn't provide the connectivity module as other board do. To simulate this internet module during the development Ethos has been used, it allows to multiplex the USB channel in more parts and use these part as we want: in this case Ethos is used to create an udp channel and to provide an ipv6 that it's needed to communicate with the network. At this level each each device has 3 topic:
+
+- device/<ID_DEVICE>/temperature : to send data about temperature;
+- device/<ID_DEVICE>/alarm : to send message of alarm when the container is filled;
+- device/<ID_DEVICE>/control : to receive data to open/close the container from remote;
+
+
+In the second point of communication there is the communication between RSBM and MOSQUITTO, this intermediate step is needed because RSBM doesn't support the secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to  
+bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud.
