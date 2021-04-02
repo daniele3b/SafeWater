@@ -197,3 +197,62 @@ static int pub( emcute_topic_t *topic,void* data,size_t len)
 
 This function allows to publish data on a certain topic, the QoS used is 0 and it takes as parameters: a topic structure that contains the ID and the name of the topic, the data to be sent and the size of the data.
 
+## Utility functions for MQTT
+
+```
+void createJSONwater(char *state,char*s)
+{
+	
+		//define text to send
+		char* prefix="{\"alarm\": \"";
+		char* suffix="\"}";
+		int i=0;
+		
+		for (i=0;i<(int)strlen(prefix);i++){
+			s[i]=prefix[i];
+		}
+		
+		
+		for( int j=0;j<(int)strlen(state);j++){
+			s[i++]=state[j];
+		}
+		
+		for(int j=0;j<(int)strlen(suffix);j++){
+			s[i++]=suffix[j];
+		}
+	
+	
+		s[i]='\0';
+		
+}
+
+
+
+void createJSONtemperature(char* temp_s,char* s)
+{
+		//define text to send
+		char* prefix="{\"temp\": \"";
+		char* suffix="\"}";
+		int i=0;
+		
+		for (i=0;i<(int)strlen(prefix);i++){
+			s[i]=prefix[i];
+		}
+		
+		
+		for( int j=0;j<(int)strlen(temp_s);j++){
+			s[i++]=temp_s[j];
+		}
+		
+		for(int j=0;j<(int)strlen(suffix);j++){
+			s[i++]=suffix[j];
+		}
+		s[i]='\0';
+		
+}
+```
+The data to be sent are formatted in JSON, because the AWS MQTT broker works in this format. This kind of file allows also an easier management of the data when the rules are applied by the IoT Core.
+
+
+
+
