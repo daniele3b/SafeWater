@@ -45,20 +45,19 @@ USEMODULE += gnrc_uhcpc
 #define DEV_MODE					1
 ```
 
-These constants represent flag, they are used to abilitate or to disable features of the system in particular:
+These constants represent flags, they are used to abilitate or to disable features of the system in particular:
 
 - DHT_DEV: active/disactive functionality about DHT22 sensor;
 - FLOAT_DEV: active/disactive functionality about fill level sensor;
 - SERVO_DEV: active/disactive functionality about servo motor;
 - RELAY_DEV: active/disactive functionality about relay;
 - MQTT_DEV: active/disactive functionality about MQTT-SN;
-- DEV_MODE: active/disactive debug print
-
+- DEV_MODE: active/disactive debug messages;
 
 ### Utility constants
 
 ```
-#define DELAY 						60
+#define DELAY 	60
 #define SERVO_MIN 550
 #define SERVO_MAX 2500
 #define DEGREE_MAX 180
@@ -74,7 +73,8 @@ These constants represent flag, they are used to abilitate or to disable feature
 #define NUMOFSUBS           (3)
 #define TOPIC_MAXLEN        (64U)
 ```
-These are utility constants, in particular **DELAY** represents the time between one reading and the next of the temperature sensor, **NUMOFSUBS** represents the number of topics in which the device is registered and **EMCUTE_ID** represents the ID of the device in this case is "waterstation"
+These are utility constants, in particular **DELAY** represents the time between one reading and the next of the temperature sensor, **NUMOFSUBS** represents the number of topics in which the device is registered, **EMCUTE_ID** represents the ID of the device in this case is "waterstation". There are also constants used to 
+define servos's parameters as: **SERVO_MIN**, **SERVO_MAX**, **DEGREE_MAX**. Furthermore, I used 2 costants to define opening and closing angles: **CLOSE_DEGREE** and **OPEN_DEGREE**.
 
 ## Global Variables
 ```
@@ -101,7 +101,7 @@ char* NOALARM= "WATER ALARM RESET!";
 
 These are global variables that threads share among them, in particular the **timer** is used to interact with the temperature sensor with regular intervals using the **rtc** module. Variables as **servo**, **floater** and **relay** represent pins in which these devices are connected.
 
-An important variable is the MQTT_TOPICS, it is an array of topics to distinguish the devices, each topic contain an incremental number, in this case 1.
+An important variable is the **MQTT_TOPICS**, it is an array of topics and in order to distinguish the devices, each topic contain an incremental number, in this case 1.
 
 ## MQTT COMMUNICATION
 
@@ -113,7 +113,7 @@ static void *emcute_thread(void *arg)
     return NULL;    /* should never be reached */
 }
 ```
-This function allows to create a thread in order to manage the MQTT communication with the local broker.
+This function allows to create a thread in order to manage the MQTT-SN communication with the local broker (RSBM).
 
 ```
 static void on_pub(const emcute_topic_t *topic, void *data, size_t len)
@@ -203,7 +203,7 @@ int setup_mqtt(void)
 }
 ```
 
-The function **setup_mqtt** allows to the emcute thread to connect to the local broker, to subscribe to each topic indicated in the MQTT_TOPICS array and to set as callback the function **on_pub**: this function allows to control the device by remote using the web dashboard monitoring the message oon the topic "device/1/control".
+The function **setup_mqtt** allows to the emcute thread to connect to the local broker, to subscribe to each topic indicated in the MQTT_TOPICS array and to set as callback the function **on_pub**: this function allows to control the device by remote using the web dashboard monitoring the message on the topic "device/1/control", in particular if the device receives "SERVOON", if the fill level is low, it'll open the water container using the servo motor instead if it receives "SERVOOFF" it'll close the water container.
 
 ```
 static int pub( emcute_topic_t *topic,void* data,size_t len)
@@ -227,7 +227,7 @@ static int pub( emcute_topic_t *topic,void* data,size_t len)
 }
 ```
 
-This function allows to publish data on a certain topic, the QoS used is 0 and it takes as parameters: a topic structure that contains the ID and the name of the topic, the data to be sent and the size of the data.
+This function allows to publish data on a certain topic, the QoS used is 0, means **At most once**, and it takes as parameters: a topic structure that contains the **ID** and the **name** of the topic, the data to be sent and the size of the data.
 
 ## Utility functions for MQTT
 
@@ -317,7 +317,7 @@ This code allows to initialize the servo motor, using the channel one of the PWM
 		}
 	}
 ```
-A relay can be seen as a digital device that takes as input value 0 (LOW VOLTAGE) or 1 (HIGH VOLTAGE), so in the piece of code above the relay is initialized as an output devicE.
+A relay can be seen as a digital device that takes as input value 0 (LOW VOLTAGE) or 1 (HIGH VOLTAGE), so in the piece of code above the relay is initialized as an output device.
 
 ### MQTT SETUP
 
@@ -329,7 +329,7 @@ A relay can be seen as a digital device that takes as input value 0 (LOW VOLTAGE
 		setup_mqtt();
 	}
 ```
-This code launchs the setup phase of the MQTT thread that as written in the section about MQTT allows to connect and to manage data from/to the local broker (RSBM):
+This code launchs the setup phase of the MQTT thread that as it's written in the section about MQTT allows to connect and to manage data from/to the local broker (RSBM):
 
 ### Floater setup
 
@@ -375,7 +375,7 @@ The floater is a sensor that works as a switch so it can be considered as input,
 				
 	}
 ```
- To initialize the DHT22 sensor it's possible to use the driver supplied by **dht.h**, it's necessary to set some parameters as: pin, type of dht sensor, and mode. Subsequently, the dht sensor is initialized using the **dht_init** function provided by the driver. Furthermore, the timer variable is used to set an interval after which a callback will be called:
+To initialize the DHT22 sensor it's possible to use the driver supplied by **dht.h**, it's necessary to set some parameters as: pin, type of dht sensor, and mode. Subsequently, the dht sensor is initialized using the **dht_init** function provided by the driver. Furthermore, the timer variable is used to set an **interval** after which a callback will be called:
  
  ```
 static void callback_rtc(void* args)
@@ -433,7 +433,7 @@ void reading_temperature_humidity(dht_t *dht)
 }
 
  ```
- The callback calls **reading_temperature_humidity** that allows to get the value about the temperature and to publish them on the temperature topic. After that the reading_temperature_humidity function is terminated the timer is resetted.
+The callback calls **reading_temperature_humidity** that allows to get the value about the temperature and to publish them on the temperature topic. After that reading_temperature_humidity function is terminated the timer is resetted.
 
 ### Water alarm management
 
@@ -504,4 +504,4 @@ void reading_temperature_humidity(dht_t *dht)
 }
  
   ```
- This function allows to the system to check the fill level of the water container it's always monitored by the program and when the container is filled the servo motor is closed and the relay is activate in order to close the circuit to allow to the water pump to extract the water. When the water reaches a low level the servo motor opens the water container and disables the water pump.
+This function allows to the system to check the fill level of the water container, the water level it's constantly monitored by the program and when the container is filled the servo motor is closed and the relay is activate in order to close the circuit to allow to the water pump to extract the water. When the water reaches a low level the servo motor opens the water container and disables the water pump.
