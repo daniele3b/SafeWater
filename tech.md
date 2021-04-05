@@ -504,4 +504,4 @@ The callback calls **reading_temperature_humidity** that allows to get the value
 }
  
   ```
-This function allows to the system to check the fill level of the water container, the water level it's constantly monitored by the program and when the container is filled the servo motor is closed and the relay is activate in order to close the circuit to allow to the water pump to extract the water. When the water reaches a low level the servo motor opens the water container and disables the water pump.
+This function allows to the system to check the fill level of the water container: the water level it's constantly monitored by the program and when the container is filled the servo motor is closed and the relay is activated in order to close the circuit to allow to the water pump to extract the water. When the water reaches a low level the servo motor opens the water container and disables the water pump.
