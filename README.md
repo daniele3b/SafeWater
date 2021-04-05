@@ -97,7 +97,7 @@ You can follow this [tutorial](https://docs.aws.amazon.com/iot/latest/developerg
 - SELECT * FROM 'device/+/temperature'
 - SELECT * FROM 'device/+/alarm'
 
-The DynamoDB tables should name safewater_temperature and safewater_alarm
+The DynamoDB tables' name should be safewater_temperature and safewater_alarm
 
 ### Setup Mosquitto
 
