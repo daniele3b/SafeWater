@@ -35,7 +35,7 @@ The system is designed in order to guarantee the correct operation also with mul
 
 As how it's possible to see from the above image the first component of the architecture is the Nucleo f401re. These are the devices that will be deployed in the water containers in order to get data from the sensor and to control the actuators to manage water resources.
 
-In the **first point** devices'll communicate with a local MQTT-SN in particular RSBM, in order to allow this exchange of data we need to provide a simulation of an ethernet/wifi module because the Nucleo f401re doesn't provide the connectivity module as other board do. To simulate this internet module during the development Ethos has been used, it allows to multiplex the USB channel in more parts and use these part as we want: in this case Ethos is used to create an udp channel and to provide an ipv6 that it's needed to communicate with the network. At this level each each device has 3 topic:
+In the **first point** devices'll communicate with a local MQTT-SN broker in particular RSBM, in order to allow this exchange of data we need to provide a simulation of an ethernet/wifi module because the Nucleo f401re doesn't provide the connectivity module as other board do. To simulate this internet module during the development Ethos has been used, it allows to multiplex the USB channel in more parts and use these part as we want: in this case Ethos is used to create an udp channel and to provide an ipv6 that it's needed to communicate with the network. At this level each each device has 3 topic:
 
 - device/<ID_DEVICE>/temperature : to send data about temperature;
 - device/<ID_DEVICE>/alarm : to send message of alarm when the container is filled;
