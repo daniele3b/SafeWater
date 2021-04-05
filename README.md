@@ -25,7 +25,7 @@ Actuators of the system are:
 - A **servo motor**: used to simulate the closure of the water container;
 - A **relay**: used to activate a water pump;
 
-When the water resource is full the water sensor level will activate the closure of the container through the servo motor and it'll activate the water pump closing the circuit using the relay in order to use the water collected. In particular, if the water container isn't filled, it's possible to close and to open manually through the web dashboard the servo motor in order to choose if the operator want that more water is collected inside that water resource or not. Furthermore, the system collects the temperature periodically in order to monitor the water and th environment status.
+When the water resource is full the water sensor level will activate the closure of the container through the servo motor and it'll activate the water pump closing the circuit using the relay in order to use the water collected. In particular, if the water container isn't filled, it's possible to close and open manually through the web dashboard the servo motor in order to choose if the operator want that more water is collected inside that water resource or not. Furthermore, the system collects the temperature periodically in order to monitor the water and the environment status.
 
 The system is designed in order to guarantee the correct operation also with multiple SafeWater devices.
 
