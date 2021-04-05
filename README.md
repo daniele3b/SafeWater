@@ -115,7 +115,7 @@ In the configuration file (config.conf) of RSBM, you need to configure the bridg
 
 ### Setup backend
 
-To run the backend you need to install all the dependencies, you can do this using **npm install** it'll install all the dependencies contained in the package.json. You need to create a .env file containing the information about the aws account:
+To run the backend you need to install all the dependencies, you can do this using **npm install** : it'll install all the dependencies contained in the package.json. You need to create a .env file containing the information about the aws account:
 
 - accessKeyId
 - secretAccessKey
