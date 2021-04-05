@@ -4,11 +4,11 @@ In order to start the server and to reach the web dashboard, you must follow the
 
 ![Home](https://github.com/daniele3b/SafeWater/blob/main/images/home.png)
 
-In this page you can finde the last temperature measurement available for each device, for each measurement you can see also the time of registration. By clicking on "Aggregated Data" you'll reach the new interface on which there all aggregated data about the temperature
+In this page you can find the last temperature measurement available for each device, for each measurement you can see also the time of registration. By clicking on "Aggregated Data" you'll reach the new interface on which there all aggregated data about the temperature
 
 ![Agg_temp](https://github.com/daniele3b/SafeWater/blob/main/images/agg_temp.png)
 
-In this page you can find the last hour aggregated data, if there are not data the row is empty. The data are: minimum temperature, maximum temperature and average.
+In this page you can find the last hour aggregated data, if there are no data the row is empty. The data are: minimum temperature, maximum temperature and average.
 If in the homepage you interact with "Last hour" you'll reach another interface
 
 ![Last_hour](https://github.com/daniele3b/SafeWater/blob/main/images/last_temp.png)
