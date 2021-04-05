@@ -35,4 +35,6 @@ By interacting with "Last Hour" of the Water alarm homepage you'll reach this pa
 Here, you can find the alarm of the last hour for all the devices.
 Lastly, by clicking on "Control actuators" you'll reach this page
 
-![!control actuators](https://github.com/daniele3b/SafeWater/blob/main/images/control%20act.png)
+![control actuators](https://github.com/daniele3b/SafeWater/blob/main/images/control%20act.png)
+
+In this last interface you can interact with all the devices: you can open or close the gate (simulated by the servo motor) obviously if the fill level is not high otherwise the command will still sent but the device will not execute the action because considered unsafe.
