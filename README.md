@@ -43,7 +43,7 @@ In the **first point** devices'll communicate with a local MQTT-SN broker in par
 
 <ID_DEVICE> is the identifider of each device.
 
-In the **second point** there is the communication between RSBM and MOSQUITTO, this intermediate step is needed because RSBM doesn't support the secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud.
+In the **second point** there is the communication between RSBM and MOSQUITTO. This intermediate step is needed because RSBM doesn't support a secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud.
 
 In the **third point** there is the secure communication between MOSQUITTO and AWS MQTT Broker, in order to let the data exchange we need to configure a device on AWS IoT Core in order to get certificates that will allows to MOSQUITTO to communicate in a secure way with the AWS MQTT Broker.
 
