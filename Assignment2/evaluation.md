@@ -2,7 +2,7 @@
 
 ## Setup the monitoring profile
 
-In order to monitor devices we need to create a **monitoring profile**, it can be created from the GUI. The profile used for my experiments is posted below. You can find detailed info about monitoring at this [link](https://iot-lab.github.io/docs/tools/consumption-monitoring/).
+In order to monitor devices we need to create a **monitoring profile**, it can be created from the GUI. The profile used for my experiments is posted below. You can find detailed info about monitoring at this [link](https://iot-lab.github.io/docs/tools/consumption-monitoring/). (Note: if you want to plot data you need to connect to ssh using the parameter -X)
 
 ![Monitoring profile](https://github.com/daniele3b/SafeWater/blob/main/images/monitoring_profile.png)
 
@@ -40,4 +40,12 @@ FIRST NODE POWER CONSUMPTION:
 SECOND NODE POWER CONSUMPTION.
 
 ![M2 POWER](https://github.com/daniele3b/SafeWater/blob/main/images/m2.png)
+
+
+
+
+
+
+
+
 
