@@ -43,4 +43,4 @@ In order to satisfy the request to visualize the aggregated data of the last hou
 
 ![temperature_update](https://github.com/daniele3b/SafeWater/blob/main/images/temp_new.jpeg)
 
-![water_uodate](https://github.com/daniele3b/SafeWater/blob/main/images/wat_man_new.jpeg)
+![water_update](https://github.com/daniele3b/SafeWater/blob/main/images/wat_man_new.jpeg)
