@@ -32,9 +32,15 @@ As the number of nodes increases, we could meet some limitations as:
 
 ![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema2.png)
 
-As how it's possible to see from the above image the first component of the architecture is the Nucleo f401re. These are the devices that will be deployed in the water containers in order to get data from the sensor and to control the actuators to manage water resources.
 
-In the **first point** devices'll communicate with a local MQTT-SN broker in particular RSBM, in order to allow this exchange of data we need to provide a simulation of an ethernet/wifi module because the Nucleo f401re doesn't provide the connectivity module as other board do. To simulate this internet module during the development Ethos has been used, it allows to multiplex the USB channel in more parts and use these part as we want: in this case Ethos is used to create an udp channel and to provide an ipv6 that it's needed to communicate with the network. At this level each each device has 3 topic:
+As how it's possible to see from the above image the first component of the architecture are ARM Cortex M3 STM32F103REY nodes. These are devices that are deployed in the test environment of Iot-Lab.
+
+In the **first point** devices'll send their packets to a border router, that is an ARM Cortex M3 STM32F103REY node that represents the router in which all nodes are connected, it represents the point of contact between the test environment and Internet. 
+
+
+In the **second point** the data are sent from the border router to a Broker.
+
+In the **third point** data sent by the border router are manageb by the broker, it is an **iotlab-a8** node in which are present a local RSBM broker and also an MQTT broker in particular **Mosquitto**.  At this level each each device has 3 topic:
 
 - device/<ID_DEVICE>/temperature : to send data about temperature;
 - device/<ID_DEVICE>/alarm : to send message of alarm when the container is filled;
@@ -42,9 +48,7 @@ In the **first point** devices'll communicate with a local MQTT-SN broker in par
 
 <ID_DEVICE> is the identifider of each device.
 
-In the **second point** there is the communication between RSBM and MOSQUITTO. This intermediate step is needed because RSBM doesn't support a secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud.
-
-In the **third point** there is the secure communication between MOSQUITTO and AWS MQTT Broker, in order to let the data exchange we need to configure a device on AWS IoT Core in order to get certificates that will allows to MOSQUITTO to communicate in a secure way with the AWS MQTT Broker.
+At this point, there is also the communication between RSBM and MOSQUITTO. This intermediate step is needed because RSBM doesn't support a secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud. Furthermore there is the secure communication between MOSQUITTO and AWS MQTT Broker, in order to let the data exchange we need to configure a device on AWS IoT Core in order to get certificates that will allows to MOSQUITTO to communicate in a secure way with the AWS MQTT Broker.
 
 In the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database, the system uses 2 tables:
 
