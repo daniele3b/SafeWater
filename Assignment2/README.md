@@ -109,11 +109,11 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 
 ## Techincal Infomation  about the code ##
 
-Information about the board's code can be found [here](https://github.com/daniele3b/SafeWater/blob/main/tech.md)
+Information about the board's code can be found [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/tech.md)
 
 ## Web Dashboard
 
-Information about the web dashoboard interface (GUI) can be found [here](https://github.com/daniele3b/SafeWater/blob/main/server.md)
+Information about the web dashoboard interface (GUI) can be found [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/server.md)
 
 
 
