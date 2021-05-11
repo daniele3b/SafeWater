@@ -12,6 +12,6 @@ The system uses a relay in order to activate a water pump when the reserve is fi
 
 ## Assignments
 
-- [Assignment 1]()
-- [Assignment 2]()
-- [Assignment 3]()
+- [Assignment 1](https://github.com/daniele3b/SafeWater/blob/main/Assignment1/README.md)
+- [Assignment 2](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/README.md)
+- [Assignment 3](https://github.com/daniele3b/SafeWater/blob/main/Assignment3/README.md)
