@@ -65,7 +65,6 @@ Obviously, the power consumption of the "client" nodes isn't affected by the num
 
 Results show that the power consumption it's not very constant during all the monitoring's period, it's possible to see some power consumption's peak when the device is receiving data from the "client" nodes. At the beginning of the plot it's possible to see a little noise but the trend across the time it'stable, this noise can be explained by time occurred to setup and run the **con** command in the client nodes.
 
-POWER CONSUMPTION:
 
 ![BORDER](https://github.com/daniele3b/SafeWater/blob/main/images/border.png)
 
@@ -75,7 +74,11 @@ Obviously, the power consumption increase when the packets that need to be forwa
 
 If we increase the number of "client" devices the power consumption increase but it is bounded by the capacity of the 6LowPAN protocol to manage packets so, the Watt consumed can increase but limited by an upper bound determined by the network protocol.
 
+From the point of network performance the following behaviours has been identification:
 
+- Increasing the number of "client" nodes the latency increase because the border route has some difficult to forward packets;
+- Increasing the number of "client" nodes as said before increase the latency and the throughput decrease because the queue of the router grows fast;
+- Also the end-to-end delay increase as the number of nodes increase.
 
 
 
