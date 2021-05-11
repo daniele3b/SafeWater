@@ -99,6 +99,7 @@ In order to start the experiment you need to have configured your SSH access key
 - Copy certs from local to a8 node using SSH and create the bridge.conf (**Check paths** if you don't how to do this checl the Mosquitto Section) 
 - Run the RSBM and Mosquitto on a8 node using: **broker_mqtt config.conf** for RSBM and **mosquitto -c bridge.conf** for mosquitto 
 
+For more detailed info you can check the following link: [LINK1](https://www.iot-lab.info/learn/tutorials/riot/riot-public-ipv6-m3/) and [LINK2](https://www.iot-lab.info/legacy/tutorials/riot-mqtt-sn-a8-m3/index.html)
 ### Setup AWS IoT Core
 
 In order to allow to the system to work it's necessary that you have an account on AWS, you need to create a "thing" and get its certificate, you can find a tutorial [here](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html).
@@ -143,11 +144,11 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 
 ### Run and Test 
 
-1. Start the mosquitto broker using **sudo service mosquitto start** or **sudo service mosquitto restart** 
-2. Start RSBM using **./bridge_mqtt config.conf** in the RSBM folder
-3. Flash and run the code into the nucleo f401re board using: **make all flash term**: it'll flash the application into the device and it will open the terminal.
+1. After you completed the setup, you need to connect to the SSH frontend using  **ssh <login>@saclay.iot-lab.info** 
+2. Connect to a m3 node in which you've flashed the firmware during setup phase (different from the border router) using: **nc m3-1 20000**
+3. Use the command: con <ipv6 addr> <port> <device_id>
 4. Start the web dashboard and the backend using **node index.js**, the web-dashboard will be available at **localhost:8080**
-5. Using the nucleo f401re terminal you can see the console print messages and you'll receive also messages coming from the broker (RSBM)
+5. Using the terminal you can see the console print messages and you'll receive also messages coming from the broker (RSBM)
 6. Using the web-dashboard you can interact with the device and retrieve data
 
 ## Techincal Infomation  about the code ##
