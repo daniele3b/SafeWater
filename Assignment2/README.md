@@ -163,8 +163,10 @@ In the broker you should see messages as in the image below:
 
 ![IMG BROK](https://github.com/daniele3b/SafeWater/blob/main/images/rsbm.png)
 
-![IMG MOSQ]((https://github.com/daniele3b/SafeWater/blob/main/images/mosquitto.png))
+![IMG MOSQ](https://github.com/daniele3b/SafeWater/blob/main/images/mosquitto.png)
 
+Instead in the border router's terminal you should see messages as the image below:
+![IMG BORDER](https://github.com/daniele3b/SafeWater/blob/main/images/border_router.png)
 ## Techincal Infomation about the code ##
 
 Information about the board's code can be found [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/tech.md)
