@@ -10,6 +10,23 @@ SafeWater is thought to maximize the capacity of the water silos and to choose t
 
 The system uses a relay in order to activate a water pump when the reserve is fill in order to use the water collected, and it use a servo motor in order to open and to close the water resource making it possible to collect water without waste.
 
+## Purpose of the second Assignment
+
+The purpose of the second assignment is to replace the single device (Nucleo-F401RE) by a Wireless Sensor Network comprised of multiple nodes, in particular they are ARM Cortex M3 STM32F103REY nodes. The devices are available of Iot-Lab a platform used for testing and evaluation of IOT solutions.  The protocol used to create the mesh is the 802.15.4 in combination with 6loWPN protocols in order to create a wireless sensor network and connect it to the internet in order to send data to AWS Cloud by using a MQTT/MQTT-SN broker.
+
+In carrying out the 2 homework, particular attention was paid to performance evaluation in terms of power consumption, latency and throughput.
+
+## Benefits & Limitations
+
+Creating a Wireless Sensor Network, we can have a network of sensors in order to monitor the environment and obtain data that would normally be impossible or difficult to find by humans. The dense deployment of these sensors allows to the system to create a model of the phenomenon that you want to measure so , as a consequence it is possible to obtain qualitatively and quantitatively better data. A network of sensors allows to be very fault tollerant, in fact, using devices/sensors with overlapping observation areas also if a node crashs we can get data using another device that is next to the crashed sensor. Obviously, if many nodes crash the network couldn't work. In terms of energy efficency, a single node must be optimzed to ensure network longevity and amortize the cost of creating the network.
+
+As the number of nodes increases, we could meet some limitations as:
+
+- Increase of the end to end delay;
+- Decrease of the throughput;
+- Increase of the maintenance cost;
+
+
 
 ## IoT Architecture
 
