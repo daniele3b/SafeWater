@@ -48,6 +48,7 @@ FIRST NODE :
 ![M1](https://github.com/daniele3b/SafeWater/blob/main/images/m1-all.png)
 
 SECOND NODE:
+
 ![M2](https://github.com/daniele3b/SafeWater/blob/main/images/m2-all.png)
 
 To get a better view of the power consumption I realized a zoomed version of the node 1 but both nodes have the same trend:
@@ -55,7 +56,7 @@ To get a better view of the power consumption I realized a zoomed version of the
 
 ![M1 ZOOM](https://github.com/daniele3b/SafeWater/blob/main/images/node_zoom.png)
 
-From the image above it's easy to identify the time in which the power consumption increase it's concurrent with the action of sending data.
+From the image above it's easy to identify that the time in which the power consumption increase it's concurrent with the action of sending data.
 
 
 
