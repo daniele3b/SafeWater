@@ -12,7 +12,7 @@ The system uses a relay in order to activate a water pump when the reserve is fi
 
 ## Purpose of the second Assignment
 
-The purpose of the second assignment is to replace the single device (Nucleo-F401RE) by a Wireless Sensor Network comprised of multiple nodes, in particular they are ARM Cortex M3 STM32F103REY nodes. The devices are available of Iot-Lab a platform used for testing and evaluation of IOT solutions.  The protocol used to create the mesh is the 802.15.4 in combination with 6loWPN protocols in order to create a wireless sensor network and connect it to the internet in order to send data to AWS Cloud by using a MQTT/MQTT-SN broker.
+The purpose of the second assignment is to replace the single device (Nucleo-F401RE) by a Wireless Sensor Network comprised of multiple nodes, in particular they are ARM Cortex M3 STM32F103REY nodes. The devices are available of [Iot-Lab](https://www.iot-lab.info/) a platform used for testing and evaluation of IOT solutions.  The protocol used to create the mesh is the 802.15.4 in combination with 6loWPAN protocols in order to create a wireless sensor network and connect it to the internet in order to send data to AWS Cloud by using a MQTT/MQTT-SN broker.
 
 In carrying out the 2 homework, particular attention was paid to performance evaluation in terms of power consumption, latency and throughput.
 
