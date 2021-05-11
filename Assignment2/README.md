@@ -30,7 +30,7 @@ As the number of nodes increases, we could meet some limitations as:
 
 ## IoT Architecture
 
-![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema.png)
+![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema2.png)
 
 As how it's possible to see from the above image the first component of the architecture is the Nucleo f401re. These are the devices that will be deployed in the water containers in order to get data from the sensor and to control the actuators to manage water resources.
 
