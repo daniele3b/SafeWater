@@ -71,7 +71,7 @@ POWER CONSUMPTION:
 
 Obviously, the power consumption increase when the packets that need to be forwarded increase and so also the capacity of the network decrease because there are too packets to manage and so the throughput is limited. In the image below, it is possible to see a zoomed version of th epower consumption:
 
-![BORDER ZOOM](https://github.com/daniele3b/SafeWater/blob/main/images/border-zoom.png)
+![BORDER ZOOM](https://github.com/daniele3b/SafeWater/blob/main/images/border_zoom.png)
 
 
 
