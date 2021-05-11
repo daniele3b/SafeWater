@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <title>Device Management </title>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="container">
+        <div id="app">
+          <div class="card mt-5">
+            <div class="card-title mt-2">
+              <button class="btn btn-success ml-2 "><a href="/" style="  color: black;"><b>Temperature Management</b></a></button>
+              <button class="btn btn-success ml-2 "><a href="control" style="  color: black;"><b>Control Actuators</b></a></button>
+
+              <center>
+                <h4 class="mt-4"><b>Water Alarm Management</b></h4>
+
+                
+              </center>
+            </div>
+
+            <!-- VIEW MODE-->
+
+            <div class="card-body" v-if="viewMode">
+          
+              <div class="table-responsive" style="height: 550px">
+                <table class="table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">DEVICE_ID</th>
+                      <th scope="col">TIME</th>
+                      <th scope="col">STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="data_alarm in data_alarms">
+                      <td>{{data_alarm.device_id}}</td>
+                      <td>{{data_alarm.time}}</td>
+                      <td>{{data_alarm.status}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <center>
+                <button
+                  type="button"
+                  data-title="Agg"
+                  class="btn btn-success mt-1"
+                  @click="switch2Agg()"
+                >
+                Aggregated Data
+                </button>
+
+                <button
+                type="button"
+                data-title="Agg"
+                class="btn btn-success mt-1"
+                @click="switch2Last()"
+              >
+              Last Hour
+              </button>
+           
+              </center>
+            </div>
+
+
+
+            <!-- AGG DATA-->
+
+            <div class="card-body" v-if="lastMode">
+              <h5 @click="switch2View()" style="color: blue; cursor: pointer">
+                <-Back
+              </h5>
+              <div class="table-responsive" style="height: 550px">
+                <table class="table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">DEVICE_ID</th>
+                      <th scope="col">TIME</th>
+                      <th scope="col">STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="data_alarm in data_alarms">
+                      <td>{{data_alarm.device_id}}</td>
+                      <td>{{data_alarm.time}}</td>
+                      <td>{{data_alarm.status}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+            <!-- AGG HOUR-->
+
+            <div class="card-body" v-if="aggMode">
+              <h5 @click="switch2View()" style="color: blue; cursor: pointer">
+                <-Back
+              </h5>
+              <div class="table-responsive" style="height: 550px">
+                <table class="table">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">DEVICE_ID</th>
+                      <th scope="col">TIMES ACTIVE</th>
+                      <th scope="col">TIMES DISACTIVE</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="agg_data_alarm in agg_data_alarms">
+                      <td>{{agg_data_alarm.device_id}}</td>
+                      <td>{{agg_data_alarm.cont_act}}</td>
+                      <td>{{agg_data_alarm.cont_disact}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            
+            </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: "#app",
+        data: {
+          data_alarms: [],
+          agg_data_alarms:[],
+          viewMode: true,
+          aggMode: false,
+          lastMode:false,        
+        },
+
+        beforeCreate: function () {
+          this.$http.get("http://localhost:8080/getAllDataAlarm").then(
+            (response) => {
+              this.data_alarms = response.body;
+              console.log(this.data_alarms)
+            },
+            (response) => {
+              this.data_alarms=[]
+              if(this.data_alarms.length==0)
+                alert("No data found!")
+            }
+          );
+        },
+
+        methods: {
+         switch2View: function (event) {
+            this.viewMode = true;
+            this.aggMode = false;
+            this.lastMode=false;
+        
+
+            this.agg_data_alarms=[]
+
+            this.$http.get("http://localhost:8080/getAllDataAlarm").then(
+            (response) => {
+              this.data_alarms = response.body;
+            },
+            (response) => {
+              this.data_alarms=[]
+              if(this.data_alarms.length==0)
+                alert("No data found!")
+            }
+          );
+          },
+
+          switch2Last: function (event) {
+            this.viewMode = false;
+            this.aggMode = false;
+            this.lastMode=true;
+
+            this.data_alarms=[]
+
+            this.$http.get("http://localhost:8080/getLastHourDataAlarm").then(
+            (response) => {
+              this.data_alarms = response.body;
+            },
+            (response) => {
+              this.data_alarms=[]
+              if(this.data_alarms.length==0)
+                alert("No data found!")
+            }
+          );
+          },
+
+
+          
+          switch2Agg: function () {
+            this.aggMode = true;
+            this.viewMode = false;
+            this.lastMode = false;
+
+
+            this.$http.get("http://localhost:8080/getAggregateDataAlarm").then(
+            (response) => {
+              this.agg_data_alarms = response.body;
+              console.log(this.agg_data_alarms)
+            },
+            (response) => {
+              this.agg_data_alarms=[]
+              if(this.agg_data_alarms.length==0)
+                alert("No data found!")
+            }
+          );
+          },
+        }
+      })
+
+  
+    </script>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
