@@ -66,16 +66,38 @@ In the **sixth point** frontend can communicate through the backend (NodeJS) usi
 
 The system needs of third parties software in order to work, so please install:
 - RIOT OS
-- RSBM
-- Mosquitto
 - NodeJS
 - Create an AWS account 
+- Create an Fit Iot-Lab account
 - Openocd
 
 The system is composed by 2 main parts:
 
-- Nucleo f401re
+- Iot-Lab
 - Server Web-dashboard
+
+### Setup experiment on Iot-Lab
+
+In order to start the experiment you need to have configured your SSH access key, for more info check this [link](https://www.iot-lab.info/docs/getting-started/ssh-access/). Run the following commands in order to setup correctly the environment to run the experiment.
+
+- Connect to a frontend (Saclay): ssh <login>@saclay.iot-lab.info (where login is your username)
+- Login into your account: iotlab-auth -u <login> (where login is your username)
+- Launch an experiment you can use the GUI from the browser or the CLI. You must choose at least 2 nodes m3 and 1 node a8. All nodes must be in the same frontend (Saclay)
+- Create a new directory: mkdir -p ~/riot 
+- Change directory: cd ~/riot
+- Clone Riot: git clone https://github.com/RIOT-OS/RIOT.git 
+- Change directory : cd RIOT
+- Set the source: source /opt/riot.source
+- Compile the code of the border router using as DEFAULT_CHANNEL 14:  make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=<channel> BOARD=iotlab-m3 -C examples/gnrc_border_router clean all
+- Flash the .elf file in a m3 node: iotlab-node --flash examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l saclay,m3,1
+- Configure the network: sudo ethos_uhcpd.py m3-1 tap0 2001:660:3207:04c1::1/64
+- Compile the main.c provided with its makefile: make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=14
+- Flash the code into another m3 device you can also use the GUI
+- Check if the network is working launch **ifconfig** after you've connected to the node **nc m3-1 20000**
+- Connect to ssh to the a8 node: ssh root@node-a8-100
+- Create and configure as in the previous assignment the config.conf changing the address instead of 127.0.0.1 you must use ipv6 given by the network (you can check it using: ip -6 -o show addr eth0 if you've doubt check RSBM section) 
+- Copy certs from local to a8 node using SSH and create the bridge.conf (**Check paths** if you don't how to do this checl the Mosquitto Section) 
+- Run the RSBM and Mosquitto on a8 node using: broker_mqtt config.conf for RSBM and mosquitto -c bridge.conf for mosquitto 
 
 ### Setup AWS IoT Core
 
