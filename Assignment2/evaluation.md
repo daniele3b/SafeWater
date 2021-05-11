@@ -32,5 +32,12 @@ The experiment lasted about 6 hours during which the devices were constantly mea
 
 Results show that the power consumption it's constant during all the monitoring's period, it's possible to see some power consumption's peak when the device is sending some data to the border router in order to send data to AWS Cloud.  In both devices the power consumption has the same trend. At the beginning of the plot it's possible to see a little noise but the trend across the time it's stable, this noise can be explained by time occurred to setup and run the **con** command.
 
+FIRST NODE POWER CONSUMPTION: 
 
+![M1 POWER](https://github.com/daniele3b/SafeWater/blob/main/images/m1.png)
+
+
+SECOND NODE POWER CONSUMPTION.
+
+![M2 POWER](https://github.com/daniele3b/SafeWater/blob/main/images/m2.png)
 
