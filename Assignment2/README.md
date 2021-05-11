@@ -151,7 +151,7 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 5. Using the terminal you can see the console print messages and you'll receive also messages coming from the broker (RSBM)
 6. Using the web-dashboard you can interact with the device and retrieve data
 
-## Techincal Infomation  about the code ##
+## Techincal Infomation about the code ##
 
 Information about the board's code can be found [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/tech.md)
 
@@ -159,5 +159,8 @@ Information about the board's code can be found [here](https://github.com/daniel
 
 Information about the web dashoboard interface (GUI) can be found [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/server.md)
 
+## Performance evaluation
+
+Perfomance evaluation can be found at this link: [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/evaluation.md)
 
 
