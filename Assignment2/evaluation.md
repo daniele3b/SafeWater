@@ -65,7 +65,13 @@ Obviously, the power consumption of the "client" nodes isn't affected by the num
 
 Results show that the power consumption it's not very constant during all the monitoring's period, it's possible to see some power consumption's peak when the device is receiving data from the "client" nodes. At the beginning of the plot it's possible to see a little noise but the trend across the time it'stable, this noise can be explained by time occurred to setup and run the **con** command in the client nodes.
 
+POWER CONSUMPTION:
 
+![BORDER](https://github.com/daniele3b/SafeWater/blob/main/images/border.png)
+
+Obviously, the power consumption increase when the packets that need to be forwarded increase and so also the capacity of the network decrease because there are too packets to manage and so the throughput is limited. In the image below, it is possible to see a zoomed version of th epower consumption:
+
+![BORDER ZOOM](https://github.com/daniele3b/SafeWater/blob/main/images/border-zoom.png)
 
 
 
