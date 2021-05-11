@@ -69,9 +69,11 @@ POWER CONSUMPTION:
 
 ![BORDER](https://github.com/daniele3b/SafeWater/blob/main/images/border.png)
 
-Obviously, the power consumption increase when the packets that need to be forwarded increase and so also the capacity of the network decrease because there are too packets to manage and so the throughput is limited. In the image below, it is possible to see a zoomed version of th epower consumption:
+Obviously, the power consumption increase when the packets that need to be forwarded increase and so also the capacity of the network decrease because there are too packets to manage and so the throughput is limited. In the image below, it is possible to see a zoomed version of the power consumption:
 
 ![BORDER ZOOM](https://github.com/daniele3b/SafeWater/blob/main/images/border_zoom.png)
+
+If we increase the number of "client" devices the power consumption increase but it is bounded by the capacity of the 6LowPAN protocol to manage packets so, the Watt consumed can increase but limited by an upper bound determined by the network protocol.
 
 
 
