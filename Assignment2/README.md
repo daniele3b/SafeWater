@@ -146,7 +146,7 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 
 1. After you completed the setup, you need to connect to the SSH frontend using  **ssh <login>@saclay.iot-lab.info** 
 2. Connect to a m3 node in which you've flashed the firmware during setup phase (different from the border router) using: **nc m3-1 20000**
-3. Use the command: con <ipv6 addr> <port> <device_id>
+3. Use the command: con < ipv6 addr > < port > < device_id >
 4. Start the web dashboard and the backend using **node index.js**, the web-dashboard will be available at **localhost:8080**
 5. Using the terminal you can see the console print messages and you'll receive also messages coming from the broker (RSBM)
 6. Using the web-dashboard you can interact with the device and retrieve data
