@@ -33,11 +33,8 @@ USEMODULE += emcute
 USEMODULE += netstats_ipv6
 USEMODULE += netstats_rpl
 # For testing we also include the ping6 command and some stats
-USEMODULE += gnrc_icmpv6_echo
 # Optimize network stack to for use with a single network interface
 USEMODULE += gnrc_netif_single
-USEMODULE += gnrc_netdev_default
-USEMODULE += auto_init_gnrc_netif
 # Specify the mandatory networking modules for IPv6
 USEMODULE += gnrc_ipv6_default
 

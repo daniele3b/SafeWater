@@ -10,24 +10,6 @@ SafeWater is thought to maximize the capacity of the water silos and to choose t
 
 The system uses a relay in order to activate a water pump when the reserve is fill in order to use the water collected, and it use a servo motor in order to open and to close the water resource making it possible to collect water without waste.
 
-## Sensors and Actuators
-
-**DHT22** is the sensor used to measure the temperature in order to choose the best use of a certain water resource. It is used for periodic sensing, the time can be specified through a constant DELAY in the code for the embedded system. The accuracy of this sensor is +-0.5 Celsius instead it's sensitivity is 0.1 Celsius and it's sensing period has an average of 2s. You can find more info [here](https://learn.adafruit.com/dht?view=all)
-
-![DHT22](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTl4hbNtcYRyk61Te1Oc6CpURJg1IHGcW0OeUMNck-hJ4uDKsvC4lXkHNmg6mThXXZPjs8&usqp=CAU)
-
-Water level sensor **ZP4510** is used to measure the fill level and it's an event driven sensor: when  the water reaches a level sufficient to close the circuit through the float, the system will detect the level of the water. Its body dimension is 36mm so it's possible to measure a growth of the water level equals to its body dimension, the fill level is constantly monitored in order to avoid waste of water. You can find more info [here](https://www.amazon.it/gp/product/B01MTYPK9I/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1)
-
-![Water level sensor](https://images-na.ssl-images-amazon.com/images/I/61%2BHMmSEonL._AC_SX450_.jpg)
-
-Actuators of the system are: 
-
-- A **servo motor**: used to simulate the closure of the water container;
-- A **relay**: used to activate a water pump;
-
-When the water resource is full the water sensor level will activate the closure of the container through the servo motor and it'll activate the water pump closing the circuit using the relay in order to use the water collected. In particular, if the water container isn't filled, it's possible to close and open manually through the web dashboard the servo motor in order to choose if the operator want that more water is collected inside that water resource or not. Furthermore, the system collects the temperature periodically in order to monitor the water and the environment status.
-
-The system is designed in order to guarantee the correct operation also with multiple SafeWater devices.
 
 ## IoT Architecture
 
@@ -60,15 +42,6 @@ In the **sixth point** frontend can communicate through the backend (NodeJS) usi
 
 
 ## HOW TO SETUP AND RUN ##
-
-In order to use the system we need to setup a circuit as in the image below:
-
-![Fritzing image](https://github.com/daniele3b/SafeWater/blob/main/images/circuit.png)
-
-**NOTE**
-The temperature is a DHT22/AM2302 instead in the image above is an RHT3, DHT22/AM2302 has three pins: VCC, GND,OUT.
-The relay module used it's different from that reported in the scheme, it has 2 relay and has 4 pins: VCC,GND,IN1,IN2. IN1 and IN2 are used to close/open the relay. Furthermore, there are also pins for external source power.
-The fill level sensor doesn't exist in Fritzing, but it's wired as in the image above.
 
 The system needs of third parties software in order to work, so please install:
 - RIOT OS
