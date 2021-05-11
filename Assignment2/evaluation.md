@@ -59,5 +59,15 @@ To get a better view of the power consumption I realized a zoomed version of the
 From the image above it's easy to identify that the time in which the power consumption increase it's concurrent with the action of sending data.
 
 
+Obviously, the power consumption of the "client" nodes isn't affected by the number of nodes.
+
+## Results for border router
+
+Results show that the power consumption it's not very constant during all the monitoring's period, it's possible to see some power consumption's peak when the device is receiving data from the "client" nodes. At the beginning of the plot it's possible to see a little noise but the trend across the time it'stable, this noise can be explained by time occurred to setup and run the **con** command in the client nodes.
+
+
+
+
+
 
 
