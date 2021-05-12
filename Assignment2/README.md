@@ -12,13 +12,13 @@ The system uses a relay in order to activate a water pump when the reserve is fi
 
 ## Purpose of the second Assignment
 
-The purpose of the second assignment is to replace the single device (Nucleo-F401RE) by a Wireless Sensor Network comprised of multiple nodes, in particular they are ARM Cortex M3 STM32F103REY nodes. The devices are available of [Iot-Lab](https://www.iot-lab.info/) a platform used for testing and evaluation of IOT solutions.  The protocol used to create the mesh is the 802.15.4 in combination with 6loWPAN protocols in order to create a wireless sensor network and connect it to the internet in order to send data to AWS Cloud by using a MQTT/MQTT-SN broker.
+The purpose of the second assignment is to replace the single device (Nucleo-F401RE) by a Wireless Sensor Network comprised of multiple nodes, in particular they are ARM Cortex M3 STM32F103REY nodes. The devices are available of [Iot-Lab](https://www.iot-lab.info/), a platform used for testing and evaluation of IOT solutions.  The protocol used to create the mesh is the 802.15.4 in combination with 6loWPAN protocols in order to create a wireless sensor network and connect it to the internet in order to send data to AWS Cloud by using a MQTT/MQTT-SN broker.
 
 In carrying out the second homework, particular attention was paid to performance evaluation in terms of power consumption, latency and throughput.
 
 ## Benefits & Limitations
 
-Creating a Wireless Sensor Network, we can have a network of sensors in order to monitor the environment and obtain data that would normally be impossible or difficult to find by humans. The dense deployment of these sensors allows to the system to create a model of the phenomenon that you want to measure so , as a consequence it is possible to obtain qualitatively and quantitatively better data. A network of sensors allows to be very fault tollerant, in fact, using devices/sensors with overlapping observation areas also if a node crashs we can get data using another device that is next to the crashed sensor. Obviously, if many nodes crash the network couldn't work. In terms of energy efficency, a single node must be optimzed to ensure network longevity and amortize the cost of creating the network.
+Creating a Wireless Sensor Network, we can have a network of sensors in order to monitor the environment and obtain data that would normally be impossible or difficult to find by humans. The dense deployment of these sensors allows to the system to create a model of the phenomenon that you want to measure so , as a consequence, it is possible to obtain qualitatively and quantitatively better data. A network of sensors allows to be very fault tollerant, in fact, using devices/sensors with overlapping observation areas, also if a node crashs, we can get data using another device that is next to the crashed sensor. Obviously, if many nodes crash the network couldn't work. In terms of energy efficency, a single node must be optimzed to ensure network longevity and amortize the cost of creating the network.
 
 As the number of nodes increases, we could meet some limitations as:
 
@@ -33,14 +33,14 @@ As the number of nodes increases, we could meet some limitations as:
 ![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema2.png)
 
 
-As how it's possible to see from the above image the first component of the architecture are ARM Cortex M3 STM32F103REY nodes. These are devices that are deployed in the test environment of Iot-Lab.
+As it's possible to see from the above image the first components of the architecture are ARM Cortex M3 STM32F103REY nodes. These are devices that are deployed in the test environment of Iot-Lab.
 
 In the **first point** devices'll send their packets to a border router, that is an ARM Cortex M3 STM32F103REY node that represents the router in which all nodes are connected, it represents the point of contact between the test environment and Internet. 
 
 
 In the **second point** the data are sent from the border router to a Broker.
 
-In the **third point** data sent by the border router are manageb by the broker, it is an **iotlab-a8** node in which are present a local RSBM broker and also an MQTT broker in particular **Mosquitto**.  At this level each each device has 3 topic:
+In the **third point** data sent by the border router are managed by the broker, it is an **iotlab-a8** node, in which are present a local RSBM broker and also an MQTT broker in particular **Mosquitto**.  At this level each each device has 3 topic:
 
 - device/<ID_DEVICE>/temperature : to send data about temperature;
 - device/<ID_DEVICE>/alarm : to send message of alarm when the container is filled;
@@ -48,9 +48,9 @@ In the **third point** data sent by the border router are manageb by the broker,
 
 <ID_DEVICE> is the identifider of each device.
 
-At this point, there is also the communication between RSBM and MOSQUITTO. This intermediate step is needed because RSBM doesn't support a secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud. Furthermore there is the secure communication between MOSQUITTO and AWS MQTT Broker, in order to let the data exchange we need to configure a device on AWS IoT Core in order to get certificates that will allows to MOSQUITTO to communicate in a secure way with the AWS MQTT Broker.
+At this point, there is also the communication between RSBM and MOSQUITTO. This intermediate step is needed because RSBM doesn't support a secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud. Furthermore there is the secure communication between MOSQUITTO and AWS MQTT Broker,and so in order to let the data exchange we need to configure a device on AWS IoT Core in order to get certificates that will allows to MOSQUITTO to communicate in a secure way with the AWS MQTT Broker.
 
-In the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database, the system uses 2 tables:
+In the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database. The system uses 2 tables:
 
 - Temperature Table: contains data about temperature sensor;
 - Alarm Table: contains data about water level sensor;
@@ -80,7 +80,7 @@ The system is composed by 2 main parts:
 
 In order to start the experiment you need to have configured your SSH access key, for more info check this [link](https://www.iot-lab.info/docs/getting-started/ssh-access/). Run the following commands in order to setup correctly the environment to run the experiment.
 
-- Connect to a frontend (Saclay): **ssh <login>@saclay.iot-lab.info** (where login is your username)
+- Connect to a frontend (Saclay): **ssh < login >@saclay.iot-lab.info** (where login is your username)
 - Login into your account: **iotlab-auth -u <login>** (where login is your username)
 - Launch an experiment you can use the GUI from the browser or the CLI. You must choose at least 2 nodes m3 and 1 node a8. All nodes must be in the same frontend (Saclay)
 - Create a new directory: **mkdir -p ~/riot** 
@@ -144,12 +144,12 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 
 ### Run and Test 
 
-1. After you completed the setup, you need to connect to the SSH frontend using  **ssh <login>@saclay.iot-lab.info** 
-2. Connect to a m3 node in which you've flashed the firmware during setup phase (different from the border router) using: **nc m3-1 20000**
+1. After you completed the setup, you need to connect to the SSH frontend using  **ssh < login >@saclay.iot-lab.info** 
+2. Connect to an m3 node in which you've flashed the firmware during setup phase (different from the border router) using: **nc m3-1 20000**
 3. Use the command: **con < ipv6 addr > < port > < device_id >**
 4. Start the web dashboard and the backend using **node index.js**, the web-dashboard will be available at **localhost:8080**
 5. Using the terminal you can see the console print messages and you'll receive also messages coming from the broker (RSBM)
-6. Using the web-dashboard you can interact with the device and retrieve data
+6. Using the web-dashboard you can interact with the devices and retrieve data
 
 If all works you should see in the terminal of the "client" node something similar to this, that means that your node is publishing data :
 
@@ -159,15 +159,17 @@ If you try to control a device from the web-dashboard you should get this messag
 
 ![DEV CONT](https://github.com/daniele3b/SafeWater/blob/main/images/dev_control.png)
 
-In the broker you should see messages as in the image below:
+In the brokers you should see messages as in the image below:
 
 ![IMG BROK](https://github.com/daniele3b/SafeWater/blob/main/images/rsbm.png)
 
 ![IMG MOSQ](https://github.com/daniele3b/SafeWater/blob/main/images/mosquitto.png)
 
-Instead in the border router's terminal you should see messages as the image below:
+Instead in the border router's terminal you should see messages as in the image below:
+
 ![IMG BORDER](https://github.com/daniele3b/SafeWater/blob/main/images/border_router.png)
-## Techincal Infomation about the code ##
+
+## Technical Infomation about the iotlab-m3 code ##
 
 Information about the board's code can be found [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/tech.md)
 
