@@ -1,7 +1,7 @@
 # SafeWater
 
 ## makefile
-These are the modules used in the system, in particular all modules used about gnrc are used in order to perform the communication between nodes of the network. 
+These are the modules used in the system, in particular modules about gnrc are used in order to perform the communication between nodes of the network. 
 ```
 
 USEMODULE += gnrc_netdev_default
@@ -76,7 +76,7 @@ char topic2[30];
 
 ```
 
-These are global variables that threads share among them, in particular the we can see the three topics used for the communication by MQTT-SN: each of this topic is **dynamically built** in order to avoid that two devices use the same topic to send their data.
+These are global variables that threads share among them, in particular we can see the three topics used for the communication by MQTT-SN: each of this topic is **dynamically built** in order to avoid that two devices use the same topic to send their data.
 
 ## MQTT COMMUNICATION
 
@@ -155,7 +155,7 @@ void createTopics(char* id_device)
 
 ```
 
-The function **createTopics** allows to the create topics based on the device_id that it's given by command line when the command **con** is used. The emcute thread is used to connect to the local broker, to subscribe to each topic indicated in the array and to set as callback the function **on_pub**: this function allows to control the device by remote using the web dashboard monitoring the message on the topic "device/**device_id**/control", in particular if the device receives "SERVOON", if the fill level is low, it'll open the water container using the servo motor instead if it receives "SERVOOFF" it'll close the water container.
+The function **createTopics** allows to the create topics based on the device_id that it's given by command line when the command **con** is used. The emcute thread is used to connect to the local broker, to subscribe to each topic indicated in the array and to set as callback the function **on_pub**: this function allows to control the device by remote using the web dashboard monitoring the message on the topic "device/**device_id**/control", in particular if the device receives "SERVOON", if the fill level is low, it'll open the water container using the servo motor, instead if it receives "SERVOOFF", it'll close the water container.
 
 ```
 static int pub( emcute_topic_t *topic,void* data,size_t len)
@@ -272,7 +272,7 @@ int main(void)
 
 ```
 
-The main function is used to initialize a shell with the "classic commands" of a Linux terminall for network monitoring and configuration, but with a personalized command: **con**. It is used to connect to the broker and start to generate random data to send to AWS by Mosquitto broker. Below, it's possible to see the **con function** explained.
+The main function is used to initialize a shell with the "classic commands" of a Linux terminal for network monitoring and configuration, but with a personalized command: **con**. It is used to connect to the broker and start to generate random data to send to AWS by Mosquitto broker. Below, it's possible to see the **con function** explained.
 
 
 
@@ -310,7 +310,7 @@ The main function is used to initialize a shell with the "classic commands" of a
     
 ```
 
-In the first part of the function we get the device_id from the command line, it is the third parameter. Using the device_id we configure the EMCUTE_ID and topics using the **strcat** function available thanks to string.h, we check also id the number of parameters given from the command line is lower than 3. We parse the first argument that represents the **ipv6 of the broker**.
+In the first part of the function we get the device_id from the command line, it is the third parameter. Using the device_id we configure the EMCUTE_ID and topics using the **strcat** function available thanks to string.h, we check also if the number of parameters given from the command line is lower than 3. We parse the first argument that represents the **ipv6 of the broker**.
 
 
 ```	
