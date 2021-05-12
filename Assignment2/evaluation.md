@@ -12,7 +12,7 @@ As it is possible to see from the image above, I monitored the following metrics
 - Current (A);
 - Voltage (V);
 
-In term of radio performance, I monitored the following metrics for each devices and in particular for the border router node:
+In term of radio performance, I monitored the following metrics for each device and in particular for the border router node:
 
 - RSSI
 
@@ -68,17 +68,17 @@ Results show that the power consumption it's not very constant during all the mo
 
 ![BORDER](https://github.com/daniele3b/SafeWater/blob/main/images/border.png)
 
-Obviously, the power consumption increase when the packets that need to be forwarded increase and so also the capacity of the network decrease because there are too packets to manage and so the throughput is limited. In the image below, it is possible to see a zoomed version of the power consumption:
+Obviously, the power consumption increases when the packets that need to be forwarded increase and so also the capacity of the network decreases because there are too packets to manage and so the throughput is limited. In the image below, it is possible to see a zoomed version of the power consumption:
 
 ![BORDER ZOOM](https://github.com/daniele3b/SafeWater/blob/main/images/border_zoom.png)
 
 If we increase the number of "client" devices the power consumption increase but it is bounded by the capacity of the 6LowPAN protocol to manage packets so, the Watt consumed can increase but limited by an upper bound determined by the network protocol.
 
-From the point of network performance the following behaviours has been identification:
+From network performance's point of view  the following behaviours have been identified:
 
-- Increasing the number of "client" nodes the latency increase because the border route has some difficult to forward packets;
-- Increasing the number of "client" nodes as said before increase the latency and the throughput decrease because the queue of the router grows fast;
-- Also the end-to-end delay increase as the number of nodes increase.
+- Increasing the number of "client" nodes the latency increases because the border router has some difficults to forward packets;
+- Increasing the number of "client" nodes as said before increases the latency and the throughput decreases because the queue of the router grows fast;
+- Also the end-to-end delay increases as the number of nodes increases.
 
 
 
