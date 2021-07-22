@@ -139,6 +139,6 @@ Information about the web dashoboard interface (GUI) can be found [here](https:/
 
 ## Performance evaluation
 
-Perfomance evaluation can be found at this link: [here](https://github.com/daniele3b/SafeWater/blob/main/Assignment2/evaluation.md)
+It was not possible to make a performance evaluation due to the Iot Lab problems.
 
 
