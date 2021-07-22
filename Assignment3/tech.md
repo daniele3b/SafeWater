@@ -1,40 +1,40 @@
 # SafeWater
 
 ## makefile
-These are the modules used in the system, in particular modules about gnrc are used in order to perform the communication between nodes of the network. 
+
+These are the modules used in the system, in particular modules sx1267 and semteck_lormac are used in order to perform the communication between nodes of IoT-Lab and The Things Network by LoRaWAN. LORA_REGION indicates the region on which LoRaWAN is used: in this case Europe with 868 Mhz.
+
 ```
 
-USEMODULE += gnrc_netdev_default
-USEMODULE += auto_init_gnrc_netif
-# Activate ICMPv6 error messages
-USEMODULE += gnrc_icmpv6_error
-# Specify the mandatory networking modules for IPv6 and UDP
-USEMODULE += gnrc_ipv6_router_default
-USEMODULE += gnrc_udp
-# Add a routing protocol
-USEMODULE += gnrc_rpl
-USEMODULE += auto_init_gnrc_rpl
-# This application dumps received packets to STDIO using the pktdump module
-USEMODULE += gnrc_pktdump
-# Additional networking modules that can be dropped if not needed
-USEMODULE += gnrc_icmpv6_echo
-# Add also the shell, some shell commands
+BOARD ?= b-l072z-lrwan1
+RIOTBASE ?= ../../RIOT
+
+USEMODULE += xtimer
+
+USEMODULE += sx1276
+USEMODULE += semtech_loramac_rx
+
+USEPKG += semtech-loramac
+
+LORA_REGION ?= EU868
+
 USEMODULE += shell
-USEMODULE += shell_commands
 USEMODULE += ps
-USEMODULE += netstats_l2
-USEMODULE += emcute
-USEMODULE += netstats_ipv6
-USEMODULE += netstats_rpl
-# For testing we also include the ping6 command and some stats
-# Optimize network stack to for use with a single network interface
-USEMODULE += gnrc_netif_single
-# Specify the mandatory networking modules for IPv6
-USEMODULE += gnrc_ipv6_default
+
+
+ifneq (,$(TTN_DEV_ID))
+  CFLAGS += -DTTN_DEV_ID=\"$(TTN_DEV_ID)\"
+endif
+
+DEVELHELP ?= 1
+
+QUIET ?= 1
+
+include $(RIOTBASE)/Makefile.include
+
 
 ```
 
-For my test, I used the channel 14 in order to avoid noisy of other experiments.
 
 ## main.c
 
