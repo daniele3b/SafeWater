@@ -43,40 +43,75 @@ include $(RIOTBASE)/Makefile.include
 
 ```
 
-#ifndef EMCUTE_ID
-#define EMCUTE_ID           ("waterstation")
-#endif
-#define EMCUTE_PRIO         (THREAD_PRIORITY_MAIN - 1)
+include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
-#define NUMOFSUBS           (3)
-#define TOPIC_MAXLEN        (64U)
-#define MAIN_QUEUE_SIZE     (8)
+#include "net/loramac.h"     
+#include "semtech_loramac.h" 
+
+#include "msg.h"
+#include "periph/gpio.h"
+#include "shell.h"
+#include "thread.h"
+#include "timex.h"
+#include "xtimer.h"
+
+ifndef TTN_DEV_ID
+#define TTN_DEV_ID ("safe_water")
+#endif
+
+#define DELAY 10000 
+
+#define RECV_MSG_QUEUE (4U)
 
 ```
-These are utility constants, in particular **NUMOFSUBS** represents the number of topics in which the device is registered, **EMCUTE_ID** represents the ID of the device: the default value is "waterstation". 
+
+There are several headers to include in order to be able to create threads, communicate by LoRaWAN and to set timer to simulate actions that interact with the environment, furthermore it is defined also the TTN_DEV_ID.
 
 ## Global Variables
 
 ```
+static msg_t _recv_queue[RECV_MSG_QUEUE];
+static char _recv_stack[THREAD_STACKSIZE_DEFAULT];
 
-char* ALARM= "WATER ALARM!";
-char* NOALARM= "WATER ALARM RESET!";
+static semtech_loramac_t loramac; 
 
-char* MQTT_TOPICS [] ={"device/x/temperature","device/x/alarm","device/x/control"};
-static char stack[THREAD_STACKSIZE_DEFAULT];
-static msg_t queue[8];
 
-static emcute_sub_t subscriptions[NUMOFSUBS];
-static char topics[NUMOFSUBS][TOPIC_MAXLEN];
-char EMCUTE_ID[20]="w";
+static const uint8_t deveui[LORAMAC_DEVEUI_LEN] = {0x11, 0x12, 0x54, 0x33, 0x21, 0x11, 0x21, 0x22};
+static const uint8_t appeui[LORAMAC_APPEUI_LEN] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x01};
+static const uint8_t appkey[LORAMAC_APPKEY_LEN] = {0x55, 0x9C, 0x10, 0x94, 0x32, 0xC5, 0x66, 0x45, 0x3E, 0x8D, 0xA3, 0x2A, 0xB2, 0x24, 0x51, 0x33};
 
-char topic0[33];
-char topic1[30];	
-char topic2[30];
+
+char stack_loop[THREAD_STACKSIZE_MAIN];
+
+kernel_pid_t tmain;
+
+int parse_command(char *command);
+
+static char encoding_table[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+                                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+                                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                                'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f',
+                                'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                                'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+                                'w', 'x', 'y', 'z', '0', '1', '2', '3',
+                                '4', '5', '6', '7', '8', '9', '+', '/'};
+								
+static int mod_table[] = {0, 2, 1};
 
 ```
 
-These are global variables that threads share among them, in particular we can see the three topics used for the communication by MQTT-SN: each of this topic is **dynamically built** in order to avoid that two devices use the same topic to send their data.
+These are global variables that threads share among them, in particular we can see the three constants used for the setup of the LoRaWAN communication:
+
+- DEVUI
+- APPEUI
+- APPKEY
+
+Encoding_table is used to perform the conversion of the data to send from IoT-Lab to TTN into base64.
+
 
 ## MQTT COMMUNICATION
 
