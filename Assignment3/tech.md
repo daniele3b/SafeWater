@@ -113,110 +113,118 @@ These are global variables that threads share among them, in particular we can s
 Encoding_table is used to perform the conversion of the data to send from IoT-Lab to TTN into base64.
 
 
-## MQTT COMMUNICATION
-
-```
-static void *emcute_thread(void *arg)
-{
-    (void)arg;
-    emcute_run(CONFIG_EMCUTE_DEFAULT_PORT, EMCUTE_ID);
-    return NULL;    /* should never be reached */
-}
-```
-This function allows to create a thread in order to manage the MQTT-SN communication with the local broker (RSBM).
-
-```
-static void on_pub(const emcute_topic_t *topic, void *data, size_t len)
-{
-    char *in = (char *)data;
-
-    printf("### got publication for topic '%s' [%i] ###\n",
-           topic->name, (int)topic->id);
-    for (size_t i = 0; i < len; i++) {
-        printf("%c", in[i]);
-    }
-
-    
-    if(topic->name==MQTT_TOPICS[2])
-    {	
-		
-			if(strcmp(in,"SERVOON")==0)			
-					open_gate(&servo);
-				
-			
-				
-			if(strcmp(in,"SERVOOFF")==0)
-				close_gate(&servo);			
-		
-	}
-	
-}
-
-
-void createTopics(char* id_device)
-{
-	char app[64]="";
-	strcat(app,"device/");
-	strcat(app,id_device);
-	strcat(app,"/temperature");
-	
-
-	
-
-	
-	strcpy(topic0,app);
-	printf("%s \n",topic0);
-	strcpy(app,"");
-	
-	strcat(app,"device/");
-	strcat(app,id_device);
-	strcat(app,"/alarm");
-	
-	
-	strcpy(topic1,app);
-	strcpy(app,"");
-	
-	
-	strcat(app,"device/");
-	strcat(app,id_device);
-	strcat(app,"/control");
-
-	
-	strcpy(topic2,app);
-	
-	
-}
-
+## LoRaWAN Setup
 
 ```
 
-The function **createTopics** allows to the create topics based on the device_id that it's given by command line when the command **con** is used. The emcute thread is used to connect to the local broker, to subscribe to each topic indicated in the array and to set as callback the function **on_pub**: this function allows to control the device by remote using the web dashboard monitoring the message on the topic "device/**device_id**/control", in particular if the device receives "SERVOON", if the fill level is low, it'll open the water container using the servo motor, instead if it receives "SERVOOFF", it'll close the water container.
+int lora_start(void) {
+    dev_id = TTN_DEV_ID[strlen(TTN_DEV_ID)-1] - '0';
+    printf("Dev id: %d\n", dev_id);
+  
+	semtech_loramac_init(&loramac);
+	
+    semtech_loramac_set_deveui(&loramac, deveui);
+    semtech_loramac_set_appeui(&loramac, appeui);
+    semtech_loramac_set_appkey(&loramac, appkey);
 
-```
-static int pub( emcute_topic_t *topic,void* data,size_t len)
-{
-	if(DEV_MODE)
-	{
-		printf("SENDING DATA!\n");
-	}
-	char *in = (char *)data;
-    unsigned flags = EMCUTE_QOS_0;
-    
-    if (emcute_pub(topic, in, len, flags) != EMCUTE_OK) {
-        printf("error: unable to publish data to topic '%s [%i]'\n",
-                topic->name, (int)topic->id);
+    semtech_loramac_set_dr(&loramac, 5);
+
+    /* start the OTAA join procedure */
+    if (semtech_loramac_join(&loramac, LORAMAC_JOIN_OTAA) != SEMTECH_LORAMAC_JOIN_SUCCEEDED) {
+        puts("Join procedure failed");
         return 1;
     }
+    puts("Join procedure succeeded");
 
-    printf("Published %i bytes to topic '%s [%i]'\n",
-            (int)len, topic->name, topic->id);
+    puts("Starting recv thread");
+    thread_create(_recv_stack, sizeof(_recv_stack),
+               THREAD_PRIORITY_MAIN - 1, 0, _recv, NULL, "recv thread"); 
+
+
     return 0;
 }
 ```
+This function allows to define each key needed for the LoRaWAN communication, allows to set the DR and it starts the join procedure and starts the receiver thread.
 
-This function allows to publish data on a certain topic, the QoS used is 0, means **At most once**, and it takes as parameters: a topic structure that contains the **ID** and the **name** of the topic, the data to be sent and the size of the data.
 
-## Utility functions for MQTT
+## LoRaWAN Sending and receiving messages
+
+```
+char *base64_encode(const char *data,size_t input_length,size_t *output_length) 
+{
+    *output_length = 4 * ((input_length + 2) / 3);
+
+    char *encoded_data = malloc(*output_length);
+    if (encoded_data == NULL) return NULL;
+
+    for (size_t i = 0, j = 0; i < input_length;) {
+        uint32_t octet_a = i < input_length ? (unsigned char)data[i++] : 0;
+        uint32_t octet_b = i < input_length ? (unsigned char)data[i++] : 0;
+        uint32_t octet_c = i < input_length ? (unsigned char)data[i++] : 0;
+
+        uint32_t triple = (octet_a << 0x10) + (octet_b << 0x08) + octet_c;
+
+        encoded_data[j++] = encoding_table[(triple >> 3 * 6) & 0x3F];
+        encoded_data[j++] = encoding_table[(triple >> 2 * 6) & 0x3F];
+        encoded_data[j++] = encoding_table[(triple >> 1 * 6) & 0x3F];
+        encoded_data[j++] = encoding_table[(triple >> 0 * 6) & 0x3F];
+    }
+
+    for (int i = 0; i < mod_table[input_length % 3]; i++)
+        encoded_data[*output_length - 1 - i] = '=';
+
+    return encoded_data;
+}
+
+
+void send(char* message) {
+  
+    printf("Sending message '%s'\n", message);
+
+    size_t inl = strlen(message);
+    size_t output;
+
+    char *encoded = base64_encode(message, inl, &output);
+   
+    uint8_t status = semtech_loramac_send(&loramac, (uint8_t *)message, strlen(message));
+  
+    if (status != SEMTECH_LORAMAC_TX_DONE) {
+        printf("Cannot send message '%s'\n", message);
+    } else {
+        printf("Message '%s' sent\n", message);
+    }
+}
+
+static void *_recv(void *arg) {
+    msg_init_queue(_recv_queue, RECV_MSG_QUEUE);
+    (void)arg;
+    while (1) {
+
+        semtech_loramac_recv(&loramac);
+        loramac.rx_data.payload[loramac.rx_data.payload_len] = 0;
+        printf("Data received: %s, port: %d", (char *)loramac.rx_data.payload, loramac.rx_data.port);
+        
+        char * msg = (char *)loramac.rx_data.payload;
+       
+    
+		if(strcmp(msg,"SERVOON")==0)			
+					printf("GATE OPEN");
+				
+			
+				
+		if(strcmp(msg,"SERVOOFF")==0)
+					printf("GATE CLOSE");
+
+       
+    }
+    return NULL;
+}
+
+```
+
+The function **send** allows to the send data generated by the values_generation thred using LoRaWAN, data needs to be encoded in base64 in fact in the function send we call the **base64_encode** function that encode the message in base64 in order to be sent by LoRaWAN. Instead, the **recv** function is used to obtain data from LoRaWAN, here we check if a command has been sent from the web dashboard or not. If the node receives "SERVOON" the gate is open otherwise if it receives "SERVOOFF" it'll close the gate.
+
+## Utility functions used to create JSON 
 
 ```
 void createJSONwater(char *state,char*s)
@@ -270,7 +278,7 @@ void createJSONtemperature(char* temp_s,char* s)
 		
 }
 ```
-The data to be sent are formatted in JSON, because the AWS MQTT broker works in this format. This kind of file allows also an easier management of the data when the rules are applied by the IoT Core.
+The data to be sent are formatted in JSON, because the AWS MQTT broker works in this format. This kind of file allows also an easier management of the data when the rules are applied by the IoT Core and also for The Things Network.
 
 
 ## Starting the node by command line
