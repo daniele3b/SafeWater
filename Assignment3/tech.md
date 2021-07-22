@@ -301,7 +301,7 @@ int main(void) {
 }
 ```
 
-The main function is used to initialize a shell with the "classic commands" of a Linux terminal for network monitoring and configuration, but with a personalized command: **con**. It is used to connect to the broker and start to generate random data to send to AWS by Mosquitto broker. Below, it's possible to see the **con function** explained.
+The main function is used to initialize a shell with the "classic commands" of a Linux terminal,furthermore it will create a thread that is represented by values_generation function that represents the **main loop**.
 
 
 
@@ -337,6 +337,6 @@ void *values_generation(void *arg)
     
 ```
 
-In the first part of the function we get the device_id from the command line, it is the third parameter. Using the device_id we configure the EMCUTE_ID and topics using the **strcat** function available thanks to string.h, we check also if the number of parameters given from the command line is lower than 3. We parse the first argument that represents the **ipv6 of the broker**.
+This function generates random data in order to simulate the sensor's behaviour and call the function used to send data by LoRaWAN.
 
 
