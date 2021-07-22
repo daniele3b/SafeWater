@@ -138,23 +138,6 @@ Furthermore, you need to create a folder called **certs** and load certificates 
 5. Using the terminal you can see the console print messages and you'll receive also messages coming from the broker (RSBM)
 6. Using the web-dashboard you can interact with the devices and retrieve data
 
-If all works you should see in the terminal of the "client" node something similar to this, that means that your node is publishing data :
-
-![DEV PUB](https://github.com/daniele3b/SafeWater/blob/main/images/dev_pub.png)
-
-If you try to control a device from the web-dashboard you should get this message in device's terminal
-
-![DEV CONT](https://github.com/daniele3b/SafeWater/blob/main/images/dev_control.png)
-
-In the brokers you should see messages as in the image below:
-
-![IMG BROK](https://github.com/daniele3b/SafeWater/blob/main/images/rsbm.png)
-
-![IMG MOSQ](https://github.com/daniele3b/SafeWater/blob/main/images/mosquitto.png)
-
-Instead in the border router's terminal you should see messages as in the image below:
-
-![IMG BORDER](https://github.com/daniele3b/SafeWater/blob/main/images/border_router.png)
 
 ## Technical Infomation about the iotlab-m3 code ##
 
