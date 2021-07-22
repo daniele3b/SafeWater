@@ -33,8 +33,7 @@ In SafeWater the messages sent are small in terms of bytes so it's possible to u
 
 As it's possible to see from the above image the first components of the architecture are  ARM CortexM0+ B-L072Z-LRWAN1 nodes of the IOT-LAB. These are devices that are deployed in the test environment of Iot-Lab.
 
-In the **first point** devices will send their packets to LoRaWAN Gateway of TTN,  These devices are ARM CortexM0+ B-L072Z-LRWAN1 nodes that represent SafeWater devices equipped with a LoRaWAN module, it represents the point of contact between the test environment and The Thing of Network. 
-
+In the **first point** devices will send their packets to LoRaWAN Gateway of TTN,  These devices are ARM CortexM0+ B-L072Z-LRWAN1 nodes that represent SafeWater devices equipped with a LoRaWAN module, it represents the point of contact between the test environment and The Things Network. 
 
 In the **second point** data are managed by The Things of Network using its API in order to route packets towards the AWS Cloud .
 
@@ -47,7 +46,6 @@ In the **third point** data sent by TTN are managed by TTN.  There are 3 topics:
 <ID_DEVICE> is the identifider of each device.
 
 At this point, there is also the communication between TTN and AWS IoT Core using MQTT. 
-
 
 Int the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database. The system uses 2 tables:
 
