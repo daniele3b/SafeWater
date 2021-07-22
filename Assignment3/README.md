@@ -28,17 +28,17 @@ In SafeWater the messages sent are small in terms of bytes so it's possible to u
 
 ## IoT Architecture
 
-![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema2.png)
+![Scheme](https://github.com/daniele3b/SafeWater/blob/main/images/schema3.png)
 
 
-As it's possible to see from the above image the first components of the architecture are ARM Cortex M3 STM32F103REY nodes. These are devices that are deployed in the test environment of Iot-Lab.
+As it's possible to see from the above image the first components of the architecture are  ARM CortexM0+ B-L072Z-LRWAN1 nodes of the IOT-LAB. These are devices that are deployed in the test environment of Iot-Lab.
 
-In the **first point** devices'll send their packets to a border router, that is an ARM Cortex M3 STM32F103REY node that represents the router in which all nodes are connected, it represents the point of contact between the test environment and Internet. 
+In the **first point** devices will send their packets to LoRaWAN Gateway of TTN,  These devices are ARM CortexM0+ B-L072Z-LRWAN1 nodes that represent SafeWater devices equipped with a LoRaWAN module, it represents the point of contact between the test environment and The Thing of Network. 
 
 
-In the **second point** the data are sent from the border router to a Broker.
+In the **second point** data are managed by The Things of Network using its API in order to route packets towards the AWS Cloud .
 
-In the **third point** data sent by the border router are managed by the broker, it is an **iotlab-a8** node, in which are present a local RSBM broker and also an MQTT broker in particular **Mosquitto**.  At this level each each device has 3 topic:
+In the **third point** data sent by TTN are managed by TTN.  There are 3 topics:
 
 - device/<ID_DEVICE>/temperature : to send data about temperature;
 - device/<ID_DEVICE>/alarm : to send message of alarm when the container is filled;
@@ -46,9 +46,10 @@ In the **third point** data sent by the border router are managed by the broker,
 
 <ID_DEVICE> is the identifider of each device.
 
-At this point, there is also the communication between RSBM and MOSQUITTO. This intermediate step is needed because RSBM doesn't support a secure connection and so it's impossible to communicate directly wth AWS IoT Core in particulare with its MQTT broker. So,a bridge has been configured in order to bridge the data from/to AWS IoT Core to RSBM allowing data to reach devices and the cloud. Furthermore there is the secure communication between MOSQUITTO and AWS MQTT Broker,and so in order to let the data exchange we need to configure a device on AWS IoT Core in order to get certificates that will allows to MOSQUITTO to communicate in a secure way with the AWS MQTT Broker.
+At this point, there is also the communication between TTN and AWS IoT Core using MQTT. 
 
-In the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database. The system uses 2 tables:
+
+Int the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database. The system uses 2 tables:
 
 - Temperature Table: contains data about temperature sensor;
 - Alarm Table: contains data about water level sensor;
