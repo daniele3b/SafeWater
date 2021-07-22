@@ -1,6 +1,8 @@
 
 # SafeWater
 
+**NOTE DUE TO THE FACT THAT THE LORA GATEWAY OF DIT/IOT-LAB  DOESN'T WORK ANY MORE, IT WAS NOT POSSIBLE TO TEST THE CODE, AND TO CARRY OUT THE PERFORMANCE EVALUATION**
+
 ## Introduction
 
 The managament of water resources is an important task in particular where there is a **shortage of water**, often rain water is not used or it's used in an inefficient way. SafeWater is an IoT solution that allows to the water resources's manager to monitor the **fill level** of the water containers and their **temperature** to choose the best moment to use them.
@@ -65,40 +67,42 @@ The system needs of third parties software in order to work, so please install:
 - RIOT OS
 - NodeJS
 - Create an AWS account 
-- Create an Fit Iot-Lab account
+- Create a Fit Iot-Lab account
+- Create a The Things Network account
 - Openocd
 
-The system is composed by 2 main parts:
+The system is composed by 4 main parts:
 
 - Iot-Lab
+- The Things Network
+- AWS Cloud
 - Server Web-dashboard
 
 ### Setup experiment on Iot-Lab
 
 In order to start the experiment you need to have configured your SSH access key, for more info check this [link](https://www.iot-lab.info/docs/getting-started/ssh-access/). Run the following commands in order to setup correctly the environment to run the experiment.
 
+#### Configure a TTN Application
+- Add an application to your TTN account by following this [doc](https://www.thethingsnetwork.org/docs/applications/add/)
+- Register a device in your [TTN application](https://www.thethingsnetwork.org/docs/devices/registration/), Keep the default OTAA procedure and set the following 3 informations: DEVICE EUI, APPLICATION EUI, Application Key
+- Be sure to select LoRaWAN Version = MAC V1.0.2, Regional Parameters Version = PHY V1.0.2 REV B,Frequency plan = Europe 863-870MHz (SF9 for RX2) and Activation mode = OTAA
+
+#### Book and configure the LoRA node
+
 - Connect to a frontend (Saclay): **ssh < login >@saclay.iot-lab.info** (where login is your username)
 - Login into your account: **iotlab-auth -u <login>** (where login is your username)
-- Launch an experiment you can use the GUI from the browser or the CLI. You must choose at least 2 nodes m3 and 1 node a8. All nodes must be in the same frontend (Saclay)
-- Create a new directory: **mkdir -p ~/riot** 
-- Change directory: **cd ~/riot**
-- Clone Riot: **git clone https://github.com/RIOT-OS/RIOT.git** 
-- Change directory : **cd RIOT**
-- Set the source: **source /opt/riot.source**
-- Compile the code of the border router using as DEFAULT_CHANNEL 14:  **make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=<channel> BOARD=iotlab-m3 -C examples/gnrc_border_router clean all**
-- Flash the .elf file in a m3 node: **iotlab-node --flash examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l saclay,m3,1**
-- Configure the network: **sudo ethos_uhcpd.py m3-1 tap0 2001:660:3207:04c1::1/64**
-- Compile the main.c provided with its makefile: **make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=14**
-- Flash the code into another m3 device you can also use the GUI
-- Check if the network is working launch **ifconfig** after you've connected to the node **nc m3-1 20000**
-- Connect to ssh to the a8 node: **ssh root@node-a8-100**
-- Create and configure as in the previous assignment the config.conf changing the address instead of 127.0.0.1 you must use ipv6 given by the network (you can check it using: ip -6 -o show addr eth0 if you've doubt check RSBM section) 
-- Copy certs from local to a8 node using SSH and create the bridge.conf (**Check paths** if you don't how to do this checl the Mosquitto Section) 
-- Run the RSBM and Mosquitto on a8 node using: **broker_mqtt config.conf** for RSBM and **mosquitto -c bridge.conf** for mosquitto 
+- Launch an experiment you can use the GUI from the browser or the CLI. You must choose a node STM32L072CZ in order to allow the LoRaWAN communication
+- Compile the code of the node available on this repository for the node
+- Flash the .elf file in the node
+- Set the LoRaWAN parameter if you doesn't set them in the code  after you've connected to the node 
+- So the node will be connected 
 
-For more detailed info you can check the following link: [LINK1](https://www.iot-lab.info/learn/tutorials/riot/riot-public-ipv6-m3/) and [LINK2](https://www.iot-lab.info/legacy/tutorials/riot-mqtt-sn-a8-m3/index.html)
+For more detailed info you can check the following link: [LINK1](https://www.iot-lab.info/legacy/tutorials/riot-ttn/index.html) .
+  
+#### Configure TTN-AWS communication
+  You can follow this [tutorial](https://www.thethingsindustries.com/docs/integrations/cloud-integrations/aws-iot/default/)
+ 
 ### Setup AWS IoT Core
-
 In order to allow to the system to work it's necessary that you have an account on AWS, you need to create a "thing" and get its certificate, you can find a tutorial [here](https://docs.aws.amazon.com/iot/latest/developerguide/iot-moisture-create-thing.html).
 
 You need also to setup 2 rules in order to make possible to Iot Core to store data coming from the Mosquitto Broker into the DynamoDB, the topic that you need to manage are:
@@ -112,16 +116,6 @@ You can follow this [tutorial](https://docs.aws.amazon.com/iot/latest/developerg
 - SELECT * FROM 'device/+/alarm'
 
 The DynamoDB tables' name should be safewater_temperature and safewater_alarm
-
-### Setup Mosquitto
-
-In order to bridge data coming from RSBM to AWS MQTT Broker and viceversa, you need to configure Mosquitto using certificates obtained before and you need to setup 3 topics with the communication mode as **both**
-
-- 'device/+/temperature'
-- 'device/+/alarm'
-- 'device/+/control'
-
-You can find a tutorial [here](https://aws.amazon.com/it/blogs/iot/how-to-bridge-mosquitto-mqtt-broker-to-aws-iot/)
 
 ### Setup backend
 
