@@ -3,6 +3,11 @@
 
 **DUE TO THE FACT THAT THE LORA GATEWAY OF FIT/IOT-LAB  DOESN'T WORK ANY MORE, IT WAS NOT POSSIBLE TO TEST THE CODE, AND TO CARRY OUT THE PERFORMANCE EVALUATION**
 
+## Post and demo
+
+- [Post]()
+- [Demo]()
+
 ## Introduction
 
 The managament of water resources is an important task in particular where there is a **shortage of water**, often rain water is not used or it's used in an inefficient way. SafeWater is an IoT solution that allows to the water resources's manager to monitor the **fill level** of the water containers and their **temperature** to choose the best moment to use them.
