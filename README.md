@@ -10,6 +10,10 @@ SafeWater is thought to maximize the capacity of the water silos and to choose t
 
 The system uses a relay in order to activate a water pump when the reserve is fill in order to use the water collected, and it use a servo motor in order to open and to close the water resource making it possible to collect water without waste.
 
+## Post and demo
+- [Post]()
+- [Demo]()
+
 ## Assignments
 
 - [Assignment 1](https://github.com/daniele3b/SafeWater/blob/main/Assignment1/README.md)
