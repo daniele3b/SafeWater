@@ -17,6 +17,8 @@ The system uses a relay in order to activate a water pump when the reserve is fi
 
 The purpose of the third assignment is to replace a Wireless Sensor Network comprised of multiple node with a STM32L072CZ, a Nucleo board that has LoraWan module incorporated. The devices are available of [Iot-Lab](https://www.iot-lab.info/), a platform used for testing and evaluation of IOT solutions. In this assignment we'll replace the MQTT protocol and the wireless 802.15.4 technology with LoRaWAN and [TheThingsNetwork](https://www.thethingsnetwork.org/) to reach the AWS cloud infrastructure.
 
+LoRaWAN is a technology that allows to have a long range communication (around 45 km) with a low throughput but in this way it is possibile to have a lower power consumption with respect to other technologies as Bluetooth, Wifi, 4G and so on.
+
 In carrying out the third homework, particular attention was paid to the development of IoT Edge Analytics.
 
 ## Benefits & Limitations
