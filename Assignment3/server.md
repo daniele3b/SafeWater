@@ -38,7 +38,7 @@ Lastly, by clicking on "Control actuators" you'll reach this page
 
 ![control actuators](https://github.com/daniele3b/SafeWater/blob/main/images/control%20act.png)
 
-In this last interface you can interact with all the devices: you can open or close the gate (simulated by the servo motor) obviously if the fill level is not high otherwise the command will still sent but the device will not execute the action because considered unsafe.
+In this last interface you can interact with all the devices: you can open or close the gate (simulated by the servo motor). Obviously if the water level is not high and it doesn't reach the warming level otherwise the command will still sent but the device will not execute the action because considered unsafe.
 
 In order to satisfy the request to visualize the aggregated data of the last hour obtained by all devices, it has been update the first view of Water Alarm Management and the Temperature Management, as in the images below:
 
