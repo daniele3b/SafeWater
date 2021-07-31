@@ -11,7 +11,7 @@
 ## Introduction
 
 The managament of water resources is an important task in particular where there is a **shortage of water**, often rain water is not used or it's used in an inefficient way. SafeWater is an IoT solution that allows to the water resources's manager to monitor the **fill level** of the water containers and their **temperature** to choose the best moment to use them.
-SafeWater is thought to maximize the capacity of the water silos and to choose the best way of use for a particular water resource, to reach these purposes it uses 2 kind of sensors:
+SafeWater is thought to maximize the capacity of the water silos and to choose the best way of use for a particular water resource, and to reach these purposes it uses 2 kind of sensors:
 
 - A DHT22: a sensor used to measure the temperature of the water;
 - A Water level sensor: a sensor used to measure the fill level of the silos;
@@ -20,7 +20,7 @@ The system uses a relay in order to activate a water pump when the reserve is fi
 
 ## Purpose of the third Assignment
 
-The purpose of the third assignment is to replace a Wireless Sensor Network comprised of multiple node with a STM32L072CZ, a Nucleo board that has LoraWan module incorporated. The devices are available of [Iot-Lab](https://www.iot-lab.info/), a platform used for testing and evaluation of IOT solutions. In this assignment we'll replace the MQTT protocol and the wireless 802.15.4 technology with LoRaWAN and [TheThingsNetwork](https://www.thethingsnetwork.org/) to reach the AWS cloud infrastructure.
+The purpose of the third assignment is to replace a Wireless Sensor Network comprised of multiple node with a STM32L072CZ, a Nucleo board that has a LoraWan module incorporated. The devices are available of [Iot-Lab](https://www.iot-lab.info/), a platform used for testing and evaluation of IOT solutions. In this assignment we'll replace the MQTT protocol and the wireless 802.15.4 technology with LoRaWAN and [TheThingsNetwork](https://www.thethingsnetwork.org/) to reach the AWS cloud infrastructure.
 
 LoRaWAN is a technology that allows to have a long range communication (around 45 km) with a low throughput but in this way it is possibile to have a lower power consumption with respect to other technologies as Bluetooth, Wifi, 4G and so on.
 
@@ -28,12 +28,12 @@ In carrying out the third homework, particular attention was paid to the develop
 
 ## Benefits & Limitations
 
-Deploying multiple sensors with overlapping observation areas in SafeWater using LoRaWAN as communication technology will result in a system that is able to obtain more data but with an important limitation due to the network capacity of LoRaWAN. Firstly, we need to consider the fact that if more devices try to send data by LoRaWAN with an high likelihood will result in network congestion, in order to do that we can use several techniques (used also in the Internet infrastructure):
+Deploying multiple sensors with overlapping observation areas in SafeWater using LoRaWAN as communication technology, this will result in a system that is able to obtain more data but with an important limitation due to the network capacity of LoRaWAN. Firstly, we need to consider the fact that if more devices try to send data by LoRaWAN with an high likelihood will result in network congestion, in order to do that we can use several techniques (used also in the Internet infrastructure):
 
 - We can set a random delay before to send data;
-- We can initilizate devices woth some delay in order to avoid overlapping time in which 2 devices are sending data;
+- We can initilizate devices with some delay in order to avoid overlapping time in which 2 devices are sending data;
 
-In SafeWater the messages sent are small in terms of bytes so it's possible to use SF9 and a maximum payload size equals to 123-byte. In safeWater there are 2 sensors a DHT22 and a water level sensor. Trying to minimize the power consumption and to avoid the network congestion the sample time of the DHT22 is increased also if it will cause an accuracy loss instead for the water sensor level there is not a problem due to the fact that is an event driven sensor so it will triggered only if it's necessary. 
+In SafeWater the messages sent are small in terms of bytes, so it's possible to use SF9 and a maximum payload size equals to 123-byte. In safeWater there are 2 sensors: a DHT22 and a water level sensor. In order to minimize the power consumption and to avoid the network congestion the sample time of the DHT22 is increased also if it will cause an accuracy loss, instead for the water sensor level there is not a problem due to the fact that is an event driven sensor so it will triggered only if it's necessary. 
 
 ## IoT Architecture
 
@@ -56,7 +56,7 @@ In the **third point** data sent by TTN are managed by TTN.  There are 3 topics:
 
 At this point, there is also the communication between TTN and AWS IoT Core using MQTT. 
 
-Int the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database. The system uses 2 tables:
+In the **fourth point** the system uses the Rules Engine provided by the IoT Core in order to save data about sensors in particular data that come from topics 1 and 2 (device/<ID_DEVICE>/temperature and device/<ID_DEVICE>/alarm) into DynamoDB, a NoSql database. The system uses 2 tables:
 
 - Temperature Table: contains data about temperature sensor;
 - Alarm Table: contains data about water level sensor;
@@ -70,7 +70,7 @@ In the **sixth point** frontend can communicate through the backend (NodeJS) usi
 
 ## HOW TO SETUP AND RUN ##
 
-The system needs of third parties software in order to work, so please install:
+The system needs of third parties software in order to work, so please install/subscribe:
 - RIOT OS
 - NodeJS
 - Create an AWS account 
@@ -98,13 +98,13 @@ In order to start the experiment you need to have configured your SSH access key
 
 - Connect to a frontend (Saclay): **ssh < login >@saclay.iot-lab.info** (where login is your username)
 - Login into your account: **iotlab-auth -u <login>** (where login is your username)
-- Launch an experiment you can use the GUI from the browser or the CLI. You must choose a node STM32L072CZ in order to allow the LoRaWAN communication
+- Launch an experiment: you can use the GUI from the browser or the CLI. You must choose a node STM32L072CZ in order to allow the LoRaWAN communication
 - Compile the code of the node available on this repository for the node
 - Flash the .elf file in the node
-- Set the LoRaWAN parameter if you doesn't set them in the code  after you've connected to the node 
+- Set the LoRaWAN parameter if you don't set them in the code  after you've connected to the node 
 - So the node will be connected 
 
-For more detailed info you can check the following link: [LINK1](https://www.iot-lab.info/legacy/tutorials/riot-ttn/index.html) .
+For more detailed info you can check the following link: [LINK](https://www.iot-lab.info/legacy/tutorials/riot-ttn/index.html) .
   
 #### Configure TTN-AWS communication
   You can follow this [tutorial](https://www.thethingsindustries.com/docs/integrations/cloud-integrations/aws-iot/default/)
