@@ -5,7 +5,7 @@ The first interface is this:
 
 ![Home](https://github.com/daniele3b/SafeWater/blob/main/images/home.png)
 
-In this page you can find the last temperature measurement available for each device, for each measurement you can see also the time of registration. By clicking on "Aggregated Data" you'll reach the new interface on which there you can see all aggregated data about the temperature
+In this page you can find the last temperature measurement available for each device, for each measurement you can see also the time of registration. By clicking on "Aggregated Data" you'll reach the new interface on which you can see all aggregated data about the temperature
 
 ![Agg_temp](https://github.com/daniele3b/SafeWater/blob/main/images/agg_temp.png)
 
